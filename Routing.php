@@ -17,23 +17,18 @@ class Routing
 
   public static function run(string $path)
   {
-
     switch ($path) {
       case 'dashboard':
         include 'public/views/dashboard.html';
         break;
       case 'login':
-
+      case 'register':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 
         $controllerObj = new $controller;
         $controllerObj->$action();
 
-      case 'register':
-        $controller = Routing::$routes[$path]['controller'];
-        $controllerObj = new $controller;
-        $controllerObj->register();
         break;
       default:
         include 'public/views/404.html';
