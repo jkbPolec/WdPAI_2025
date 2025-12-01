@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REGISTER</title>
+  <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/login.css">
+</head>
+
+<body>
+  <form action="\register" method="POST">
+    <h1 id="title">REGISTER FORM</h1>
+
+    <?php if(isset($messages)): ?>
+
+    <p class="messages">
+      <?= $messages ?>
+    </p>
+
+    <?php endif; ?>
+
+    <input name="email" type="email" placeholder="Podaj email">
+    <input name="password" type="password" placeholder="Podaj hasło">
+    <input name="password2" type="password" placeholder="Powtórz hasło">
+
+    <input name="firstname" type="text" placeholder="Podaj imie">
+    <input name="lastname" type="text" placeholder="Podaj naziwsko">
+
+    <button type="submit">REGISTER</button>
+  </form>
+
+</body>
+
+</html>

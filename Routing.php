@@ -1,6 +1,7 @@
 <?php
 
 require_once 'src/controllers/SecurityController.php';
+require_once 'src/controllers/DashboardController.php';
 class Routing
 {
 
@@ -12,15 +13,17 @@ class Routing
     'register' => [
       'controller' => 'SecurityController',
       'action' => 'register'
-    ]
+    ],
+    'dashboard' => [
+      'controller' => 'DashboardController',
+      'action' => 'index'
+    ],
   ];
 
   public static function run(string $path)
   {
     switch ($path) {
       case 'dashboard':
-        include 'public/views/dashboard.html';
-        break;
       case 'login':
       case 'register':
         $controller = Routing::$routes[$path]['controller'];

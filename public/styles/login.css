@@ -29,6 +29,11 @@ button {
   outline: none;
 }
 
+input:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+}
+
 input {
   border: 1px solid #ccc;
 }
