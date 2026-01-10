@@ -12,6 +12,7 @@ class AppController
     return $_SERVER["REQUEST_METHOD"] === 'POST';
   }
 
+  
   protected function render(string $template = null, array $variables = [])
   {
     $templatePath = 'public/views/' . $template . '.html';
