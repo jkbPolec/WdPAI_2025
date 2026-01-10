@@ -1,14 +1,35 @@
-h1 {
-  color: blue;
+:root {
+  --h1-color: #0F172A;
+  --small-color: #90A5B7;
+  --small-label-color: #2F3A4B;
+  --main-font: "Inter", sans-serif;
+  --background-color: #F6F7F8;
+  --main-color: #13A4EC;
+}
+
+
+input::placeholder {
+  color: var(--small-color)
 }
 
 
 body {
   height: 100vh;
   margin: 0;
+  background-color: var(--background-color);
 
   display: flex;
   flex-direction: column;
+
+  font-family: var(--main-font);
+
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+input,
+button {
+  font-family: var(--main-font);
 }
 
 nav {
