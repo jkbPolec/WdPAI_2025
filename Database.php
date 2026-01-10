@@ -1,45 +1,45 @@
-  <?php
+<?php
 
-  //  .env
-  require_once "config.php";
+//  .env
+require_once "config.php";
 
-  //singleton
-  class Database
+//singleton
+class Database
+{
+  private $username;
+  private $password;
+  private $host;
+  //private $conn;
+  private $database;
+
+  public function __construct()
   {
-    private $username;
-    private $password;
-    private $host;
-    //private $conn;
-    private $database;
+    $this->username = USERNAME;
+    $this->password = PASSWORD;
+    $this->host = HOST;
+    $this->database = DATABASE;
+  }
 
-    public function __construct()
-    {
-      $this->username = USERNAME;
-      $this->password = PASSWORD;
-      $this->host = HOST;
-      $this->database = DATABASE;
-    }
+  public function connect()
+  {
+    try {
+      $conn = new PDO(
+        "pgsql:host=$this->host;port=5432;dbname=$this->database",
+        $this->username,
+        $this->password,
+        ["sslmode"  => "prefer"]
+      );
 
-    public function connect()
-    {
-      try {
-        $conn = new PDO(
-          "pgsql:host=$this->host;port=5432;dbname=$this->database",
-          $this->username,
-          $this->password,
-          ["sslmode"  => "prefer"]
-        );
-
-        // set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $conn;
-      } catch (PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
-      }
-    }
-
-    public function disconnect($conn)
-    {
-      //this->conn = null;
+      // set the PDO error mode to exception
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $conn;
+    } catch (PDOException $e) {
+      die("Connection failed: " . $e->getMessage());
     }
   }
+
+  public function disconnect($conn)
+  {
+    //this->conn = null;
+  }
+}

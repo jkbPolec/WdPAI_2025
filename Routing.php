@@ -18,6 +18,10 @@ class Routing
       'controller' => 'DashboardController',
       'action' => 'index'
     ],
+    'searchCards' => [
+      'controller' => 'DashboardController',
+      'action' => 'search'
+    ],
   ];
 
   public static function run(string $path)
@@ -26,6 +30,7 @@ class Routing
       case 'dashboard':
       case 'login':
       case 'register':
+      case 'searchCards':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 

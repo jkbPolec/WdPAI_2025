@@ -38,9 +38,9 @@ class UserRepository extends Repository
     string $bio = ''
   ): void {
     $query = $this->database->connect()->prepare(
-      'INSERT INTO users (firstname, lastname, email, password, bio, enabled)
+      'INSERT INTO users (firstname, lastname, email, password, bio)
       VALUES (?,?,?,?,?)'
     );
-    $query->execute([$firstName, $lastName, $email, $hashedPassword, $bio, true]);
+    $query->execute([$firstName, $lastName, $email, $hashedPassword, $bio]);
   }
 }

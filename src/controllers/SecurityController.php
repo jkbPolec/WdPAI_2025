@@ -8,7 +8,7 @@ class SecurityController extends AppController
 
   private UserRepository $userRepository;
 
-  public function construct()
+  public function __construct()
   {
     $this->userRepository = new UserRepository();
   }
@@ -24,9 +24,17 @@ class SecurityController extends AppController
     $password = $_POST['password'] ?? '';
 
 
-    $user = $this->userRepository->getUsers($email);
+    $user = $this->userRepository->getUserByEmail($email);
 
+    if (!$user) {
+      return $this->render('login', ["messages" => "Niepoprawny email lub hasło"]);
+    }
 
+    if (!password_verify($password, $user['password'])) {
+      return $this->render('login', ["messages" => "Niepoprawny email lub hasło"]);
+    }
+
+    //TODO create user session
     //return $this->render('dashboard', ["cards" => []]);
 
     $url = "http://$_SERVER[HTTP_HOST]";
