@@ -7,7 +7,9 @@
   <title>Dashboard</title>
   <link rel="stylesheet" type="text/css" href="public/styles/main.css">
   <link rel="stylesheet" type="text/css" href="public/styles/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/dashboard.css">
   <script src="public/scripts/main.js" defer></script>
+  <script src="public/scripts/dashboard.js" defer></script>
 </head>
 
 <body>
@@ -15,15 +17,29 @@
     <?php include 'public/views/common/sidebar.html'; ?>
 
     <main class="content">
-      <header>
-        <h1>Dashboard</h1>
-        <p>Witaj z powrotem,
-          <?php echo $_SESSION['user_email']; ?>!
+      <header class="dashboard-header">
+        <h1 class="welcome-text">
+          Cześć,
+          <?php echo $_SESSION['user_firstname']; ?>!
+        </h1>
+        <p class="summary-text">
+          Oto podsumowanie Twoich finansów.
         </p>
       </header>
 
-      <section class="cards">
+      <h2 class="section-title">Twoje grupy</h2>
+
+      <section class="groups-container">
+
       </section>
+
+      <template id="group-card-template">
+        <a href="" class="group-card">
+          <h2 class="group-name">Nazwa grupy</h2>
+          <p class="balance-label">Twoje saldo w tej grupie:</p>
+          <p class="balance-value">0.00 zł</p>
+        </a>
+      </template>
     </main>
   </div>
 </body>

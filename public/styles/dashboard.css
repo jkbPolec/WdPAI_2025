@@ -1,3 +1,130 @@
-h1 {
-  color: red;
+.dashboard-header {
+  margin-bottom: 2.5rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.welcome-text {
+  color: var(--h1-color);
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.8px;
+}
+
+.summary-text {
+  color: var(--small-color);
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.section-title {
+  color: var(--h1-color);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1.5rem 0;
+  letter-spacing: -0.3px;
+}
+
+.groups-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.group-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(19, 164, 236, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+}
+
+.group-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(19, 164, 236, 0.15);
+  border-color: rgba(19, 164, 236, 0.2);
+}
+
+.group-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--h1-color);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.balance-info {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.balance-label {
+  font-size: 0.85rem;
+  color: var(--small-color);
+  font-weight: 500;
+  margin: 0;
+}
+
+.balance-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.balance-positive {
+  color: #10b981;
+}
+
+.balance-negative {
+  color: #ef4444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .groups-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .groups-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .groups-container {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header,
+  .section-title {
+    text-align: center;
+  }
+
+  .group-card {
+    min-height: 160px;
+    padding: 1.5rem;
+  }
 }
