@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nowa Grupa - SplitBill</title>
+  <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/addGroup.css">
+  <script src="public/scripts/addGroup.js" defer></script>
+</head>
+
+<body>
+  <div class="main-container">
+    <?php include 'public/views/common/sidebar.html'; ?>
+    <main class="content">
+      <header class="page-header">
+        <h1>Utwórz nową grupę</h1>
+        <p>Podaj szczegóły, aby rozpocząć współpracę ze znajomymi.</p>
+      </header>
+      <div class="form-card">
+        <form action="/addGroup" method="POST">
+          <div class="field-group">
+            <label>Nazwa grupy</label>
+            <input name="name" type="text" placeholder="np. Mieszkanie na Słonecznej" required>
+          </div>
+          <div class="field-group">
+            <label>Opis (opcjonalnie)</label>
+            <textarea name="description" placeholder="np. Wspólne wydatki na jedzenie i rachunki" rows="4"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Zaproś członków</label>
+            <input type="email" id="email-input" placeholder="Wpisz email i naciśnij Enter">
+            <div id="email-tags" class="email-tags"></div>
+            <input type="hidden" name="members" id="members-json">
+          </div>
+          <div class="form-footer">
+            <button type="button" class="btn-cancel" onclick="window.history.back()">Anuluj</button>
+            <button type="submit" class="btn-submit">Utwórz grupę</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+
+</html>

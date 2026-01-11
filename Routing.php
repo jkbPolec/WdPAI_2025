@@ -2,6 +2,7 @@
 
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/GroupController.php';
 class Routing
 {
 
@@ -30,6 +31,10 @@ class Routing
         'controller' => 'SecurityController',
         'action' => 'logout'
     ],
+    'addGroup' => [
+        'controller' => 'GroupController',
+        'action' => 'addGroup'
+      ],
   ];
 
   public static function run(string $path)
@@ -41,6 +46,7 @@ class Routing
       case 'search-cards':
       case 'ping':
       case 'logout':
+      case 'addGroup':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 
