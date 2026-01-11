@@ -105,3 +105,69 @@
 .logout:hover img {
   filter: invert(24%) sepia(91%) saturate(5423%) hue-rotate(346deg) brightness(93%) contrast(92%) opacity(1);
 }
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100vw;
+    height: 75px;
+    min-width: 100%;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    border-right: none;
+    border-top: 1px solid rgba(19, 164, 236, 0.1);
+    box-shadow: 0 -10px 30px rgba(19, 164, 236, 0.08);
+    background-color: white;
+    z-index: 1000;
+  }
+
+  .sidebar-logo {
+    display: none;
+  }
+
+  .sidebar-footer {
+    display: contents;
+  }
+
+  .menu-item {
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+    height: 100%;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 0;
+    text-align: center;
+    justify-content: center;
+    color: #94a3b8;
+  }
+
+  .menu-item img {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+  }
+
+  .menu-item:hover {
+    background-color: transparent;
+    color: var(--main-color);
+    transform: none;
+  }
+
+  .logout {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .logout:hover {
+    background-color: transparent;
+    color: #e11d48;
+  }
+}
