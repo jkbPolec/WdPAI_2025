@@ -25,7 +25,11 @@ class Routing
     'ping' => [
       'controller' => 'DashboardController',
       'action' => 'ping'
-    ]
+    ],
+    'logout' => [
+        'controller' => 'SecurityController',
+        'action' => 'logout'
+    ],
   ];
 
   public static function run(string $path)
@@ -36,6 +40,7 @@ class Routing
       case 'register':
       case 'search-cards':
       case 'ping':
+      case 'logout':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 

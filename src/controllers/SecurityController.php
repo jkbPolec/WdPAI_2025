@@ -89,4 +89,20 @@ class SecurityController extends AppController
     );
     return $this->render('login', ["messages" => "Rejestracja przebiegła pomyślnie! Możesz się teraz zalogować."]);
   }
+
+  public function logout()
+  {
+    session_unset();
+    session_destroy();
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    $url = "http://$_SERVER[HTTP_HOST]";
+    header("Location: {$url}/login");
+    exit();
+  }
 }
