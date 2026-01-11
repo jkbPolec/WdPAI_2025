@@ -5,6 +5,19 @@ require_once 'Repository.php';
 class UserRepository extends Repository
 {
 
+  private static $instance;
+
+  private function __construct() {
+    parent::__construct();
+  }
+
+  public static function getInstance(): UserRepository {
+    if (!isset(self::$instance)) {
+      self::$instance = new UserRepository();
+    }
+    return self::$instance;
+  }
+
   public function getUsers(): ?array
   {
 

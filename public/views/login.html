@@ -21,6 +21,7 @@
 
   <form action="\login" method="post">
 
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
     <h1 class="main-text">
       <img src="public/icons/logo.png" alt="logo.png" class="logo">
       SplitBill

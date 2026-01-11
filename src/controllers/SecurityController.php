@@ -10,7 +10,7 @@ class SecurityController extends AppController
 
   public function __construct()
   {
-    $this->userRepository = new UserRepository();
+    $this->userRepository = UserRepository::getInstance();
   }
 
   public function login()
@@ -18,6 +18,13 @@ class SecurityController extends AppController
 
     if (!$this->isPost()) {
       return $this->render('login');
+    }
+
+    $token = $_POST['csrf_token'] ?? '';
+
+    if (!hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        return $this->render('login', ['messages' => 'Błędny token bezpieczeństwa (CSRF).']);
     }
 
     $email = $_POST['email'] ?? '';
@@ -34,8 +41,10 @@ class SecurityController extends AppController
       return $this->render('login', ["messages" => "Niepoprawny email lub hasło"]);
     }
 
-    //TODO create user session
-    //return $this->render('dashboard', ["cards" => []]);
+    session_regenerate_id(true);
+
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_email'] = $user['email'];
 
     $url = "http://$_SERVER[HTTP_HOST]";
     header("Location: {$url}/dashboard");
@@ -45,6 +54,13 @@ class SecurityController extends AppController
   {
     if ($this->isGet()) {
       return $this->render('register');
+    }
+
+    $token = $_POST['csrf_token'] ?? '';
+
+    if (!hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        return $this->render('login', ['messages' => 'Błędny token bezpieczeństwa (CSRF).']);
     }
 
     $email = $_POST['email'] ?? '';

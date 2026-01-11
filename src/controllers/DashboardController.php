@@ -16,6 +16,13 @@ class DashboardController extends AppController
 
   public function index()
   {
+
+    if (!isset($_SESSION['user_id'])) {
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
+        exit();
+    }
+
     return $this->render("dashboard");
   }
 
@@ -29,12 +36,6 @@ class DashboardController extends AppController
       echo json_encode(["error" => "Media type not supported"]);
       return;
     }
-
-    //if ($this->isPost()) {
-    //  http_response_code(405);
-    //  echo json_encode(["error" => "Method not allowed"]);
-    //  return;
-    //}
 
     $content = trim(file_get_contents("php://input"));
     $decoded = json_decode($content, true);
