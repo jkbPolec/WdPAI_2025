@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 :root {
   --h1-color: #0F172A;
   --small-color: #90A5B7;
@@ -5,6 +7,7 @@
   --main-font: "Inter", sans-serif;
   --background-color: #F6F7F8;
   --main-color: #13A4EC;
+  --main-font: 'Inter', sans-serif;
 }
 
 
@@ -28,7 +31,9 @@ body {
 }
 
 input,
-button {
+button,
+textarea,
+select {
   font-family: var(--main-font);
 }
 
