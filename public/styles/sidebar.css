@@ -1,0 +1,107 @@
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  padding: 1.5rem;
+  border-right: 1px solid rgba(19, 164, 236, 0.08);
+  box-shadow: 15px 0 35px -20px rgba(19, 164, 236, 0.15);
+  z-index: 100;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 3rem;
+}
+
+.sidebar-logo img {
+  height: 38px;
+  width: auto;
+  filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(184deg) brightness(101%) contrast(92%);
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 38px;
+}
+
+.logo-text span {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--h1-color);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.logo-text small {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--small-color);
+  line-height: 1.1;
+  text-align: left;
+}
+
+.sidebar-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.85rem 1.1rem;
+  color: #5d718a;
+  text-decoration: none;
+  border-radius: 0.8rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-item img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) opacity(0.5);
+  transition: all 0.2s;
+}
+
+.menu-item:hover {
+  background-color: rgba(19, 164, 236, 0.07);
+  color: var(--main-color);
+  transform: translateX(4px);
+}
+
+.menu-item:hover img {
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(184deg) brightness(101%) contrast(92%) opacity(1);
+}
+
+.logout {
+  margin-top: auto;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1.5rem;
+}
+
+.logout img {
+  filter: brightness(0) opacity(0.5);
+}
+
+.logout:hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+  transform: none;
+}
+
+.logout:hover img {
+  filter: invert(24%) sepia(91%) saturate(5423%) hue-rotate(346deg) brightness(93%) contrast(92%) opacity(1);
+}
