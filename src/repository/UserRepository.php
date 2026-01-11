@@ -47,13 +47,12 @@ class UserRepository extends Repository
     string $email,
     string $hashedPassword,
     string $firstName,
-    string $lastName,
-    string $bio = ''
+    string $lastName
   ): void {
     $query = $this->database->connect()->prepare(
-      'INSERT INTO users (firstname, lastname, email, password, bio)
-      VALUES (?,?,?,?,?)'
+      'INSERT INTO users (firstname, lastname, email, password)
+      VALUES (?,?,?,?)'
     );
-    $query->execute([$firstName, $lastName, $email, $hashedPassword, $bio]);
+    $query->execute([$firstName, $lastName, $email, $hashedPassword]);
   }
 }
