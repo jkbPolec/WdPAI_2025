@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       allExpenses = data.expenses;
       renderMembers(data.members);
       renderTable(allExpenses);
-      setupFilters(data.members);
+      initCustomSelects(data.members);
     });
 });
 
@@ -44,25 +44,55 @@ function renderTable(expenses) {
     `).join('');
 }
 
-function setupFilters(members) {
-  const personSelect = document.getElementById('filter-person');
+function initCustomSelects(members) {
+  const personOptions = document.getElementById('person-options');
   members.forEach(m => {
-    personSelect.innerHTML += `<option value="${m.firstname}">${m.firstname}</option>`;
+    const opt = document.createElement('div');
+    opt.className = 'option';
+    opt.dataset.value = m.firstname;
+    opt.textContent = m.firstname;
+    personOptions.appendChild(opt);
   });
 
-  [document.getElementById('filter-person'), document.getElementById('filter-category'), document.getElementById('sort-order')]
-    .forEach(el => el.addEventListener('change', () => {
-      const person = document.getElementById('filter-person').value;
-      const sort = document.getElementById('sort-order').value;
+  document.querySelectorAll('.custom-select').forEach(select => {
+    const trigger = select.querySelector('.select-trigger');
+    const options = select.querySelectorAll('.option');
 
-      let filtered = [...allExpenses];
-      if (person !== 'all') filtered = filtered.filter(e => e.firstname === person);
+    trigger.addEventListener('click', (e) => {
+      document.querySelectorAll('.custom-select').forEach(s => {
+        if (s !== select) s.classList.remove('active');
+      });
+      select.classList.toggle('active');
+      e.stopPropagation();
+    });
 
-      filtered.sort((a, b) => sort === 'desc' ?
-        new Date(b.created_at) - new Date(a.created_at) :
-        new Date(a.created_at) - new Date(b.created_at)
-      );
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        select.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        select.querySelector('.select-trigger span').textContent = option.textContent;
+        select.classList.remove('active');
+        applyFilters();
+      });
+    });
+  });
 
-      renderTable(filtered);
-    }));
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
+  });
+}
+
+function applyFilters() {
+  const person = document.querySelector('#person-dropdown .option.selected').dataset.value;
+  const sort = document.querySelector('#sort-dropdown .option.selected').dataset.value;
+
+  let filtered = [...allExpenses];
+  if (person !== 'all') filtered = filtered.filter(e => e.firstname === person);
+
+  filtered.sort((a, b) => sort === 'desc' ?
+    new Date(b.created_at) - new Date(a.created_at) :
+    new Date(a.created_at) - new Date(b.created_at)
+  );
+
+  renderTable(filtered);
 }

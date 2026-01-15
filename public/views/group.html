@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grupa - SplitBill</title>
   <link rel="stylesheet" type="text/css" href="public/styles/main.css">
   <link rel="stylesheet" type="text/css" href="public/styles/sidebar.css">
@@ -29,21 +30,38 @@
       <section class="members-summary" id="members-container"></section>
 
       <section class="table-filters">
-        <select id="filter-category">
-          <option value="all">Wszystkie kategorie</option>
-          <option value="Jedzenie">Jedzenie</option>
-          <option value="Rachunki">Rachunki</option>
-        </select>
-        <select id="filter-person">
-          <option value="all">Wszyscy członkowie</option>
-        </select>
-        <select id="sort-order">
-          <option value="desc">Najnowsze</option>
-          <option value="asc">Najstarsze</option>
-        </select>
+        <div class="custom-select" id="category-dropdown">
+          <div class="select-trigger"><span>Wszystkie kategorie</span>
+            <div class="arrow"></div>
+          </div>
+          <div class="select-options">
+            <div class="option selected" data-value="all">Wszystkie kategorie</div>
+            <div class="option" data-value="Jedzenie">Jedzenie</div>
+            <div class="option" data-value="Rachunki">Rachunki</div>
+          </div>
+        </div>
+
+        <div class="custom-select" id="person-dropdown">
+          <div class="select-trigger"><span>Wszyscy członkowie</span>
+            <div class="arrow"></div>
+          </div>
+          <div class="select-options" id="person-options">
+            <div class="option selected" data-value="all">Wszyscy członkowie</div>
+          </div>
+        </div>
+
+        <div class="custom-select" id="sort-dropdown">
+          <div class="select-trigger"><span>Najnowsze</span>
+            <div class="arrow"></div>
+          </div>
+          <div class="select-options">
+            <div class="option selected" data-value="desc">Najnowsze</div>
+            <div class="option" data-value="asc">Najstarsze</div>
+          </div>
+        </div>
       </section>
 
-      <div class="table-wrapper">
+      <div class="table-card">
         <table class="expenses-table">
           <thead>
             <tr>
