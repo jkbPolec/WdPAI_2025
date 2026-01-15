@@ -35,6 +35,10 @@ class Routing
         'controller' => 'GroupController',
         'action' => 'addGroup'
       ],
+      'getGroups' => [
+        'controller' => 'GroupController',
+        'action' => 'getGroups'
+    ]
   ];
 
   public static function run(string $path)
@@ -47,6 +51,7 @@ class Routing
       case 'ping':
       case 'logout':
       case 'addGroup':
+      case 'getGroups':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 

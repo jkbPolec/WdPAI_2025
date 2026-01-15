@@ -28,4 +28,18 @@ class GroupRepository extends Repository {
 
         $stmt->execute([$groupId, $userId]);
     }
+
+    public function getGroupsByUserId(int $userId): array
+{
+    $stmt = $this->database->connect()->prepare('
+        SELECT g.id, g.name, g.description
+        FROM "group" g
+        JOIN group_user gu ON g.id = gu.group_id
+        WHERE gu.user_id = :userId
+    ');
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
