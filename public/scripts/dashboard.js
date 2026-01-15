@@ -41,4 +41,13 @@ function renderGroups(groups, container, template) {
 
     container.appendChild(clone);
   });
+
+  const addCard = document.createElement("a");
+  addCard.href = "/addGroup";
+  addCard.className = "group-card add-group-btn";
+  addCard.innerHTML = `
+        <div class="add-icon">+</div>
+        <span class="add-text">Utwórz nową grupę</span>
+    `;
+  container.appendChild(addCard);
 }

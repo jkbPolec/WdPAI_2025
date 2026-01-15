@@ -42,4 +42,33 @@ class GroupRepository extends Repository {
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+    public function getGroupDetails(int $groupId): ?array {
+        $stmt = $this->database->connect()->prepare('SELECT * FROM "group" WHERE id = ?');
+        $stmt->execute([$groupId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function getGroupMembers(int $groupId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT u.id, u.firstname, u.lastname, u.email 
+            FROM users u
+            JOIN group_user gu ON u.id = gu.user_id
+            WHERE gu.group_id = ?
+        ');
+        $stmt->execute([$groupId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getGroupExpenses(int $groupId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT ge.*, u.firstname, u.lastname 
+            FROM group_expense ge
+            JOIN users u ON ge.created_by = u.id
+            WHERE ge.group_id = ?
+            ORDER BY ge.created_at DESC
+        ');
+        $stmt->execute([$groupId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

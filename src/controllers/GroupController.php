@@ -47,4 +47,29 @@ class GroupController extends AppController {
         echo json_encode($groups);
         exit();
     }
+
+    public function group() {
+        if (!isset($_SESSION['user_id'])) { header("Location: /login"); exit(); }
+        $this->render('group');
+    }
+
+    public function getGroupDetails() {
+        $groupId = $_GET['id'] ?? null;
+        if (!$groupId) { http_response_code(400); echo json_encode(['error' => 'No ID']); exit(); }
+
+        header('Content-type: application/json');
+        
+        $data = [
+            'group' => $this->groupRepository->getGroupDetails($groupId),
+            'members' => $this->groupRepository->getGroupMembers($groupId),
+            'expenses' => $this->groupRepository->getGroupExpenses($groupId)
+        ];
+
+        foreach ($data['members'] as &$m) {
+            $m['balance'] = rand(-50, 50);
+        }
+
+        echo json_encode($data);
+        exit();
+    }
 }

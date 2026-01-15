@@ -38,6 +38,14 @@ class Routing
       'getGroups' => [
         'controller' => 'GroupController',
         'action' => 'getGroups'
+    ],
+    'group' => [
+    'controller' => 'GroupController',
+    'action' => 'group'
+    ],
+    'getGroupDetails' => [
+        'controller' => 'GroupController',
+        'action' => 'getGroupDetails'
     ]
   ];
 
@@ -52,6 +60,8 @@ class Routing
       case 'logout':
       case 'addGroup':
       case 'getGroups':
+      case 'group':
+      case 'getGroupDetails':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 

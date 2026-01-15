@@ -89,6 +89,46 @@
   color: #ef4444;
 }
 
+.add-group-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(19, 164, 236, 0.3);
+
+  background-color: rgba(19, 164, 236, 0.02);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-group-btn:hover {
+  background-color: rgba(19, 164, 236, 0.05);
+  border-color: var(--main-color);
+  transform: translateY(-5px);
+}
+
+.add-icon {
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--main-color);
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.add-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--main-color);
+}
+
+.add-group-btn {
+  box-shadow: none;
+}
+
+.add-group-btn:hover {
+  box-shadow: 0 10px 20px rgba(19, 164, 236, 0.1);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -1,0 +1,157 @@
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.group-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--h1-color);
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-settle {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-add-expense {
+  background: var(--main-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* KAFELKI CZŁONKÓW */
+.members-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.member-status-card {
+  background: white;
+  padding: 1.2rem 2rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.member-avatar {
+  width: 50px;
+  height: 50px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.status-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-negative {
+  color: #ef4444;
+}
+
+.status-positive {
+  color: #10b981;
+}
+
+.status-neutral {
+  color: var(--small-color);
+}
+
+/* FILTRY */
+.table-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.table-filters select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: white;
+  color: var(--small-label-color);
+  font-size: 0.9rem;
+}
+
+/* TABELA */
+.expenses-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid #edf2f7;
+  overflow-x: auto;
+}
+
+.expenses-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.expenses-table th {
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.expenses-table td {
+  padding: 1.2rem 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.category-tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Kolory tagów */
+.tag-food {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.tag-bills {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.tag-fun {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
