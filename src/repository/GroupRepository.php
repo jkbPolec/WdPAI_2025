@@ -29,8 +29,7 @@ class GroupRepository extends Repository {
         $stmt->execute([$groupId, $userId]);
     }
 
-    public function getGroupsByUserId(int $userId): array
-{
+    public function getGroupsByUserId(int $userId): array {
     $stmt = $this->database->connect()->prepare('
         SELECT g.id, g.name, g.description
         FROM "group" g
@@ -41,7 +40,7 @@ class GroupRepository extends Repository {
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
 
     public function getGroupDetails(int $groupId): ?array {
         $stmt = $this->database->connect()->prepare('SELECT * FROM "group" WHERE id = ?');
