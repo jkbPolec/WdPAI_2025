@@ -5,9 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (container && template) {
     fetch("/getGroups")
       .then(response => response.json())
-      .then(groups => {
-        if (groups.length === 0) {
+      .then(result => {
+        const groups = result.data;
+
+        if (!groups || groups.length === 0) {
           container.innerHTML = "<p>Nie należysz jeszcze do żadnej grupy.</p>";
+          renderAddButton(container);
           return;
         }
         renderGroups(groups, container, template);
@@ -42,6 +45,10 @@ function renderGroups(groups, container, template) {
     container.appendChild(clone);
   });
 
+  renderAddButton(container);
+}
+
+function renderAddButton(container) {
   const addCard = document.createElement("a");
   addCard.href = "/addGroup";
   addCard.className = "group-card add-group-btn";

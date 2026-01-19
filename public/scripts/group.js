@@ -7,12 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch(`/getGroupDetails?id=${groupId}`)
     .then(res => res.json())
-    .then(data => {
-      document.getElementById('group-title').textContent = `Wydatki: ${data.group.name}`;
-      allExpenses = data.expenses;
-      renderMembers(data.members);
-      renderTable(allExpenses);
-      initCustomSelects(data.members);
+    .then(result => {
+      if (result.status === 'success') {
+        const data = result.data;
+
+        document.getElementById('group-title').textContent = `Wydatki: ${data.group.name}`;
+        allExpenses = data.expenses;
+        renderMembers(data.members);
+        renderTable(allExpenses);
+        initCustomSelects(data.members);
+      }
     });
 });
 
@@ -46,6 +50,8 @@ function renderTable(expenses) {
 
 function initCustomSelects(members) {
   const personOptions = document.getElementById('person-options');
+  if (!personOptions) return;
+
   members.forEach(m => {
     const opt = document.createElement('div');
     opt.className = 'option';
@@ -83,8 +89,11 @@ function initCustomSelects(members) {
 }
 
 function applyFilters() {
-  const person = document.querySelector('#person-dropdown .option.selected').dataset.value;
-  const sort = document.querySelector('#sort-dropdown .option.selected').dataset.value;
+  const selectedPerson = document.querySelector('#person-dropdown .option.selected');
+  const selectedSort = document.querySelector('#sort-dropdown .option.selected');
+
+  const person = selectedPerson ? selectedPerson.dataset.value : 'all';
+  const sort = selectedSort ? selectedSort.dataset.value : 'desc';
 
   let filtered = [...allExpenses];
   if (person !== 'all') filtered = filtered.filter(e => e.firstname === person);
