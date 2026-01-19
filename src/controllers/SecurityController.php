@@ -1,109 +1,69 @@
 <?php
 
 require_once 'AppController.php';
-require_once __DIR__ . '/../repository/UserRepository.php';
+require_once __DIR__ . '/../services/SecurityService.php';
 
 class SecurityController extends AppController
 {
+    private SecurityService $securityService;
 
-  private UserRepository $userRepository;
-
-  public function __construct()
-  {
-    $this->userRepository = UserRepository::getInstance();
-  }
-
-  public function login()
-  {
-
-    if (!$this->isPost()) {
-      return $this->render('login');
+    public function __construct()
+    {
+        $this->securityService = new SecurityService();
     }
 
-    $token = $_POST['csrf_token'] ?? '';
+    public function login()
+    {
+        if (!$this->isPost()) return $this->render('login');
 
-    if (!hash_equals($_SESSION['csrf_token'], $token)) {
-        http_response_code(403);
-        return $this->render('login', ['messages' => 'Błędny token bezpieczeństwa (CSRF).']);
+        if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+            return $this->render('login', ['messages' => 'Błąd CSRF.']);
+        }
+
+        $result = $this->securityService->login($_POST);
+
+        if ($result['status'] === 'success') {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $result['data']['id'];
+            $_SESSION['user_email'] = $result['data']['email'];
+            $_SESSION['user_firstname'] = $result['data']['firstname'];
+
+            header("Location: http://{$_SERVER['HTTP_HOST']}/dashboard");
+            exit();
+        }
+
+        return $this->render('login', ["messages" => $result['message']]);
     }
 
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+    public function register()
+    {
+        if ($this->isGet()) return $this->render('register');
 
+        if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+            return $this->render('register', ['messages' => 'Błąd CSRF.']);
+        }
 
-    $user = $this->userRepository->getUserByEmail($email);
+        $result = $this->securityService->register($_POST);
 
-    if (!$user) {
-      return $this->render('login', ["messages" => "Niepoprawny email lub hasło"]);
+        if ($result['status'] === 'success') {
+            return $this->render('login', ["messages" => $result['message']]);
+        }
+
+        return $this->render('register', ["messages" => $result['message']]);
     }
 
-    if (!password_verify($password, $user['password'])) {
-      return $this->render('login', ["messages" => "Niepoprawny email lub hasło"]);
+    public function logout()
+    {
+        session_unset();
+        session_destroy();
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        header("Location: http://{$_SERVER['HTTP_HOST']}/login");
+        exit();
     }
-
-    session_regenerate_id(true);
-
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['user_email'] = $user['email'];
-    $_SESSION['user_firstname'] = $user['firstname'];
-
-    $url = "http://$_SERVER[HTTP_HOST]";
-    header("Location: {$url}/dashboard");
-  }
-
-  public function register()
-  {
-    if ($this->isGet()) {
-      return $this->render('register');
-    }
-
-    $token = $_POST['csrf_token'] ?? '';
-
-    if (!hash_equals($_SESSION['csrf_token'], $token)) {
-        http_response_code(403);
-        return $this->render('login', ['messages' => 'Błędny token bezpieczeństwa (CSRF).']);
-    }
-
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $password2 = $_POST['password2'] ?? '';
-    $firstName = $_POST['firstname'] ?? '';
-    $lastName = $_POST['lastname'] ?? '';
-
-    if (empty($email) || empty($password) || empty($password2) || empty($firstName) || empty($lastName)) {
-      return $this->render('register', ["messages" => "Wszystkie pola są wymagane"]);
-    }
-
-    if ($password !== $password2) {
-      return $this->render('register', ["messages" => "Podane hasła nie są identyczne"]);
-    }
-
-    if ($this->userRepository->getUserByEmail($email)) {
-      return $this->render('register', ["messages" => "Użytkownik z podanym adresem email już istnieje"]);
-    }
-
-    $this->userRepository->createUser(
-      $email,
-      password_hash($password, PASSWORD_BCRYPT),
-      $firstName,
-      $lastName
-    );
-    return $this->render('login', ["messages" => "Rejestracja przebiegła pomyślnie! Możesz się teraz zalogować."]);
-  }
-
-  public function logout()
-  {
-    session_unset();
-    session_destroy();
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
-        );
-    }
-    $url = "http://$_SERVER[HTTP_HOST]";
-    header("Location: {$url}/login");
-    exit();
-  }
 }

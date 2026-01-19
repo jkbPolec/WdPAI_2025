@@ -34,4 +34,9 @@ abstract class Service
         }
         return true;
     }
+
+     protected function validateCsrf(?string $token): bool
+    {
+        return hash_equals($_SESSION['csrf_token'] ?? '', $token ?? '');
+    }
 }
