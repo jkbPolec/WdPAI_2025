@@ -20,37 +20,33 @@ class Routing
       'controller' => 'DashboardController',
       'action' => 'index'
     ],
-    'search-cards' => [
-      'controller' => 'DashboardController',
-      'action' => 'search'
-    ],
     'ping' => [
       'controller' => 'DashboardController',
       'action' => 'ping'
     ],
     'logout' => [
-        'controller' => 'SecurityController',
-        'action' => 'logout'
+      'controller' => 'SecurityController',
+      'action' => 'logout'
     ],
     'addGroup' => [
-        'controller' => 'GroupController',
-        'action' => 'addGroup'
+      'controller' => 'GroupController',
+      'action' => 'addGroup'
       ],
       'getGroups' => [
-        'controller' => 'GroupController',
-        'action' => 'getGroups'
+      'controller' => 'GroupController',
+      'action' => 'getGroups'
     ],
     'group' => [
-    'controller' => 'GroupController',
-    'action' => 'group'
+      'controller' => 'GroupController',
+      'action' => 'group'
     ],
     'getGroupDetails' => [
-        'controller' => 'GroupController',
-        'action' => 'getGroupDetails'
+      'controller' => 'GroupController',
+      'action' => 'getGroupDetails'
     ],
     'addExpense' => [
-    'controller' => 'ExpenseController',
-    'action' => 'addExpense'
+      'controller' => 'ExpenseController',
+      'action' => 'addExpense'
     ]
   ];
 
