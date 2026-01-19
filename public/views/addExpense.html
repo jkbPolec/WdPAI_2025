@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dodaj wydatek - SplitBill</title>
+  <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="public/styles/addExpense.css">
+  <script src="public/scripts/addExpense.js" defer></script>
+</head>
+
+<body>
+  <div class="main-container">
+    <?php include 'public/views/common/sidebar.html'; ?>
+    <main class="content">
+      <header class="page-header">
+        <h1>Dodaj nowy wydatek</h1>
+        <p>Wprowadź szczegóły, aby podzielić się kosztami.</p>
+      </header>
+
+      <div class="form-card">
+        <form action="/addExpense" method="POST">
+          <input type="hidden" name="group_id" id="group-id-input">
+
+          <div class="field-group">
+            <label>Tytuł</label>
+            <input name="name" type="text" placeholder="np. Zakupy w Biedronce" required>
+          </div>
+
+          <div class="row">
+            <div class="field-group">
+              <label>Kwota (PLN)</label>
+              <div class="input-with-label">
+                <input name="amount" type="number" step="0.01" placeholder="0.00" required>
+                <span>PLN</span>
+              </div>
+            </div>
+            <div class="field-group">
+              <label>Data</label>
+              <input name="date" type="date" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Kategoria</label>
+            <select name="category">
+              <option>Zakupy spożywcze</option>
+              <option>Rachunki</option>
+              <option>Rozrywka</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Uczestnicy</label>
+            <div class="participants-grid" id="participants-list">
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button type="button" class="btn-cancel" onclick="window.history.back()">Anuluj</button>
+            <button type="submit" class="btn-submit">Dodaj wydatek</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+
+</html>

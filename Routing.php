@@ -3,6 +3,7 @@
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/GroupController.php';
+require_once 'src/controllers/ExpenseController.php';
 class Routing
 {
 
@@ -46,6 +47,10 @@ class Routing
     'getGroupDetails' => [
         'controller' => 'GroupController',
         'action' => 'getGroupDetails'
+    ],
+    'addExpense' => [
+    'controller' => 'ExpenseController',
+    'action' => 'addExpense'
     ]
   ];
 
@@ -62,6 +67,7 @@ class Routing
       case 'getGroups':
       case 'group':
       case 'getGroupDetails':
+      case 'addExpense':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 

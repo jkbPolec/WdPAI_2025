@@ -23,7 +23,10 @@
         <div class="header-actions">
           <button class="btn-settle"><img src="https://img.icons8.com/material-outlined/20/000000/scales.png"> Rozlicz
             się</button>
-          <button class="btn-add-expense">+ Dodaj wydatek</button>
+          <a href="/addExpense?groupId=<?php echo $_GET['id']; ?>" class="btn-add-expense"
+            style="text-decoration: none;">
+            + Dodaj wydatek
+          </a>
         </div>
       </header>
 
