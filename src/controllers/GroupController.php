@@ -36,9 +36,17 @@ class GroupController extends AppController
     public function group()
     {
         if (!isset($_SESSION['user_id'])) {
-            header("Location: /login");
+        header("Location: /login");
+        exit();
+        }
+
+        $groupId = (int)($_GET['id'] ?? 0);
+
+        if (!$this->groupService->canUserAccessGroup($groupId)) {
+            header("Location: /dashboard");
             exit();
         }
+
         $this->render('group');
     }
 

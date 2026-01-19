@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMembers(data.members);
         renderTable(allExpenses);
         initCustomSelects(data.members);
+      } else {
+        alert(result.message);
+        window.location.href = "/dashboard";
       }
     });
 });

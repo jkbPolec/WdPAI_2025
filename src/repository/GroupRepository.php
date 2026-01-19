@@ -70,4 +70,16 @@ class GroupRepository extends Repository {
         $stmt->execute([$groupId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function isUserInGroup(int $groupId, int $userId): bool {
+    $stmt = $this->database->connect()->prepare('
+        SELECT 1 FROM group_user 
+        WHERE group_id = :groupId AND user_id = :userId
+    ');
+    $stmt->bindParam(':groupId', $groupId, PDO::PARAM_INT);
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch() !== false;
+    }
 }

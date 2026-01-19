@@ -58,10 +58,19 @@ class GroupService extends Service
 
     public function getFullGroupDetails(int $groupId): array
     {
-        if (!$this->getCurrentUserId()) return $this->error("Nieautoryzowany", 401);
+        $userId = $this->getCurrentUserId();
+        if (!$userId) {
+            return $this->error("Nieautoryzowany", 401);
+        }
+
+        if (!$this->groupRepository->isUserInGroup($groupId, $userId)) {
+            return $this->error("Nie masz uprawnień do przeglądania tej grupy.", 403);
+        }
 
         $group = $this->groupRepository->getGroupDetails($groupId);
-        if (!$group) return $this->error("Grupa nie istnieje", 404);
+        if (!$group) {
+            return $this->error("Grupa nie istnieje", 404);
+        }
 
         $data = [
             'group' => $group,
@@ -74,5 +83,11 @@ class GroupService extends Service
         }
 
         return $this->success($data);
+    }
+
+    public function canUserAccessGroup(int $groupId): bool {
+        $userId = $this->getCurrentUserId();
+        if (!$userId) return false;
+        return $this->groupRepository->isUserInGroup($groupId, $userId);
     }
 }
