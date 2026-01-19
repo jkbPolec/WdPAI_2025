@@ -2,18 +2,10 @@
 
 require_once 'AppController.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
-require_once __DIR__ . '/../repository/CardRepository.php';
 
 class DashboardController extends AppController
 {
-
-  private $cardRepository;
-
-  public function __construct()
-  {
-    $this->cardRepository = new CardRepository();
-  }
-
+  
   public function index()
   {
 
