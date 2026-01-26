@@ -1,17 +1,24 @@
 <?php
 require_once 'Service.php';
 require_once __DIR__ . '/../repository/ExpenseRepository.php';
+require_once __DIR__ . '/../repository/GroupRepository.php';
 
 class ExpenseService extends Service {
     private $expenseRepository;
+    private $groupService;
 
     public function __construct() {
         $this->expenseRepository = new ExpenseRepository();
+        $this->groupRepository = new GroupRepository();
     }
 
     public function addExpense(array $data): array {
         $userId = $this->getCurrentUserId();
         $groupId = (int)$data['group_id'];
+        $groupRepo = new GroupRepository(); 
+        if (!$groupRepo->isUserInGroup($groupId, $userId)) {
+            return $this->error("Nie masz uprawnień do dodawania wydatków w tej grupie.", 403);
+        }
         $amount = (float)$data['amount'];
         $participants = $data['participants'] ?? [];
 
