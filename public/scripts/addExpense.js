@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(result => {
       if (result.status === 'success') {
-        const members = result.data.members;
+        const members = result.data.all_members || result.data.members || [];
         participantsList.innerHTML = members.map(m => `
                     <div class="participant-item">
                         <input type="checkbox" name="participants[]" value="${m.id}" id="user-${m.id}" checked>

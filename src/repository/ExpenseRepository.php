@@ -30,4 +30,21 @@ class ExpenseRepository extends Repository {
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function getExpenseParticipantsByGroup(int $groupId): array {
+        $stmt = $this->database->connect()->prepare('
+            SELECT ge.id AS expense_id,
+                   ge.created_by,
+                   ge.amount,
+                   geu.user_id AS participant_id
+            FROM group_expense ge
+            JOIN group_expense_user geu ON geu.expense_id = ge.id
+            WHERE ge.group_id = :group_id
+        ');
+
+        $stmt->bindParam(':group_id', $groupId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
