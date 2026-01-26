@@ -103,6 +103,91 @@
   color: var(--small-color);
 }
 
+.member-management {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 164, 236, 0.15);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.03);
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.member-management h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: var(--h1-color);
+}
+
+.member-add {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.member-add input {
+  background: #fcfdfe;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.7rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  color: var(--h1-color);
+  outline: none;
+}
+
+.member-add input:focus {
+  border-color: rgba(19, 164, 236, 0.6);
+  box-shadow: 0 0 0 3px rgba(19, 164, 236, 0.12);
+}
+
+.member-add button {
+  background: var(--main-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.member-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  border: 1px solid #e2e8f0;
+  background: #fcfdfe;
+}
+
+.member-meta strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--h1-color);
+}
+
+.member-meta span {
+  font-size: 0.8rem;
+  color: var(--small-color);
+}
+
+.member-remove {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
   .group-header {
     flex-direction: column;
@@ -126,6 +211,20 @@
 
   .payment-fields button {
     width: 100%;
+  }
+
+  .member-add {
+    grid-template-columns: 1fr;
+  }
+
+  .member-add button {
+    width: 100%;
+  }
+
+  .member-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
   }
 }
 .members-summary {

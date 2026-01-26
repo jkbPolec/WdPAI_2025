@@ -3,6 +3,7 @@
 require_once 'Service.php';
 require_once __DIR__ . '/../repository/GroupRepository.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
+require_once __DIR__ . '/../services/MemberService.php';
 require_once __DIR__ . '/../repository/ExpenseRepository.php';
 require_once __DIR__ . '/../repository/PaymentRepository.php';
 
@@ -12,6 +13,7 @@ class GroupService extends Service
     private $userRepository;
     private $expenseRepository;
     private $paymentRepository;
+    private $memberService;
 
     public function __construct()
     {
@@ -19,6 +21,7 @@ class GroupService extends Service
         $this->userRepository = UserRepository::getInstance();
         $this->expenseRepository = new ExpenseRepository();
         $this->paymentRepository = new PaymentRepository();
+        $this->memberService = new MemberService();
     }
 
     public function createGroup(array $data): array
@@ -36,10 +39,7 @@ class GroupService extends Service
 
             $emails = json_decode($data['members'] ?? '[]', true);
             foreach ($emails as $email) {
-                $user = $this->userRepository->getUserByEmail($email);
-                if ($user) {
-                    $this->groupRepository->addMember($groupId, $user['id']);
-                }
+                $this->memberService->addMemberByEmail($groupId, $email, $ownerId);
             }
 
             return $this->success(['id' => $groupId], "Grupa została utworzona");
@@ -96,6 +96,7 @@ class GroupService extends Service
             'group' => $group,
             'members' => $membersForDisplay,
             'all_members' => $allMembers,
+            'current_user_id' => $userId,
             'expenses' => $this->groupRepository->getGroupExpenses($groupId)
         ];
 

@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initCategoryOptions(allExpenses);
         initCustomSelects(data.members);
         initPaymentForm(data.members);
+        initMemberManagement(data);
       } else {
         alert(result.message);
         window.location.href = "/dashboard";
@@ -182,6 +183,96 @@ function initPaymentForm(members) {
       .catch(() => alert('Błąd połączenia z serwerem.'))
       .finally(() => {
         submitBtn.disabled = false;
+      });
+  });
+}
+
+function initMemberManagement(data) {
+  const section = document.getElementById('member-management');
+  const list = document.getElementById('member-list');
+  const addBtn = document.getElementById('member-add-btn');
+  const emailInput = document.getElementById('member-email-input');
+
+  if (!section || !list || !addBtn || !emailInput) return;
+
+  const currentUserId = data.current_user_id;
+  const isOwner = String(data.group.owner) === String(currentUserId);
+  if (!isOwner) return;
+
+  section.style.display = 'block';
+
+  const members = data.all_members || [];
+  list.innerHTML = members.map(m => `
+    <div class="member-row">
+      <div class="member-meta">
+        <strong>${m.firstname} ${m.lastname}</strong>
+        <span>${m.email}</span>
+      </div>
+      ${String(m.id) === String(data.group.owner) ? '' : `<button class="member-remove" data-id="${m.id}">Usuń</button>`}
+    </div>
+  `).join('');
+
+  addBtn.addEventListener('click', () => {
+    const email = emailInput.value.trim();
+    if (!email) {
+      alert('Wpisz email.');
+      return;
+    }
+
+    const body = new URLSearchParams();
+    body.append('group_id', groupId);
+    body.append('email', email);
+
+    addBtn.disabled = true;
+    fetch('/addMember', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: body.toString()
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          window.location.reload();
+        } else {
+          alert(result.message || 'Błąd dodawania użytkownika.');
+        }
+      })
+      .catch(() => alert('Błąd połączenia z serwerem.'))
+      .finally(() => {
+        addBtn.disabled = false;
+      });
+  });
+
+  list.addEventListener('click', (e) => {
+    const target = e.target;
+    if (!target.classList.contains('member-remove')) return;
+
+    const memberId = target.dataset.id;
+    const body = new URLSearchParams();
+    body.append('group_id', groupId);
+    body.append('member_id', memberId);
+
+    target.disabled = true;
+    fetch('/removeMember', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: body.toString()
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          window.location.reload();
+        } else {
+          alert(result.message || 'Błąd usuwania użytkownika.');
+        }
+      })
+      .catch(() => alert('Błąd połączenia z serwerem.'))
+      .finally(() => {
+        target.disabled = false;
       });
   });
 }

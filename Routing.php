@@ -5,6 +5,7 @@ require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/GroupController.php';
 require_once 'src/controllers/ExpenseController.php';
 require_once 'src/controllers/PaymentController.php';
+require_once 'src/controllers/MemberController.php';
 class Routing
 {
 
@@ -52,6 +53,14 @@ class Routing
     'addPayment' => [
       'controller' => 'PaymentController',
       'action' => 'addPayment'
+    ],
+    'addMember' => [
+      'controller' => 'MemberController',
+      'action' => 'addMember'
+    ],
+    'removeMember' => [
+      'controller' => 'MemberController',
+      'action' => 'removeMember'
     ]
   ];
 
@@ -70,6 +79,8 @@ class Routing
       case 'getGroupDetails':
       case 'addExpense':
       case 'addPayment':
+      case 'addMember':
+      case 'removeMember':
         $controller = Routing::$routes[$path]['controller'];
         $action = Routing::$routes[$path]['action'];
 
