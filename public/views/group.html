@@ -21,14 +21,27 @@
           <p>Przegląd wszystkich transakcji w grupie.</p>
         </div>
         <div class="header-actions">
-          <button class="btn-settle"><img src="https://img.icons8.com/material-outlined/20/000000/scales.png"> Rozlicz
-            się</button>
+          <button class="btn-settle" type="button" id="toggle-payment">
+            <img src="https://img.icons8.com/material-outlined/20/000000/scales.png"> Rozlicz się
+          </button>
           <a href="/addExpense?groupId=<?php echo $_GET['id']; ?>" class="btn-add-expense"
             style="text-decoration: none;">
             + Dodaj wydatek
           </a>
         </div>
       </header>
+
+      <section class="payment-form" id="payment-form" style="display: none;">
+        <h3>Dodaj rozliczenie</h3>
+        <div class="payment-fields">
+          <input type="number" step="0.01" min="0" id="payment-amount" placeholder="Kwota (PLN)">
+          <select id="payment-user">
+            <option value="">Wybierz użytkownika</option>
+          </select>
+          <button type="button" id="payment-submit">Zapisz</button>
+        </div>
+        <p class="payment-note">Formularz nie jest połączony z API.</p>
+      </section>
 
       <section class="members-summary" id="members-container"></section>
 

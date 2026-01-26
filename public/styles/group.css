@@ -42,6 +42,92 @@
   justify-content: center;
 }
 
+.payment-form {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(19, 164, 236, 0.15);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.03);
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.payment-form h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: var(--h1-color);
+}
+
+.payment-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.payment-fields input,
+.payment-fields select {
+  background: #fcfdfe;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.7rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+  color: var(--h1-color);
+  outline: none;
+}
+
+.payment-fields input:focus,
+.payment-fields select:focus {
+  border-color: rgba(19, 164, 236, 0.6);
+  box-shadow: 0 0 0 3px rgba(19, 164, 236, 0.12);
+}
+
+.payment-fields button {
+  background: var(--main-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.payment-fields button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.payment-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.85rem;
+  color: var(--small-color);
+}
+
+@media screen and (max-width: 768px) {
+  .group-header {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn-settle,
+  .btn-add-expense {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .payment-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-fields button {
+    width: 100%;
+  }
+}
 .members-summary {
   display: flex;
   flex-direction: column;

@@ -60,4 +60,9 @@ VALUES
     (4, 2, 3, 2, 40.00),
     (5, 2, 1, 2, 60.00);
 
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+SELECT setval('group_id_seq', (SELECT MAX(id) FROM "group"));
+SELECT setval('group_expense_id_seq', (SELECT MAX(id) FROM group_expense));
+SELECT setval('group_payment_id_seq', (SELECT MAX(id) FROM group_payment));
+
 COMMIT;
