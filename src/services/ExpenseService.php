@@ -5,7 +5,7 @@ require_once __DIR__ . '/../repository/GroupRepository.php';
 
 class ExpenseService extends Service {
     private $expenseRepository;
-    private $groupService;
+    private $groupRepository;
 
     public function __construct() {
         $this->expenseRepository = new ExpenseRepository();
@@ -20,6 +20,7 @@ class ExpenseService extends Service {
             return $this->error("Nie masz uprawnień do dodawania wydatków w tej grupie.", 403);
         }
         $amount = (float)$data['amount'];
+        $category = $data['category'] ?? 'Inne';
         $participants = $data['participants'] ?? [];
 
         if (!$userId) return $this->error("Brak autoryzacji", 401);
@@ -28,7 +29,7 @@ class ExpenseService extends Service {
         }
 
         try {
-            $expenseId = $this->expenseRepository->createExpense($groupId, $userId, $data['name'], $amount);
+            $expenseId = $this->expenseRepository->createExpense($groupId, $userId, $data['name'], $amount, $category);
 
             foreach ($participants as $pUserId) {
                 $this->expenseRepository->addExpenseUser($expenseId, (int)$pUserId);

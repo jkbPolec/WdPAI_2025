@@ -3,10 +3,10 @@ require_once 'Repository.php';
 
 class ExpenseRepository extends Repository {
 
-    public function createExpense(int $groupId, int $createdBy, string $name, float $amount): int {
+    public function createExpense(int $groupId, int $createdBy, string $name, float $amount, string $category): int {
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO group_expense (group_id, created_by, name, amount)
-            VALUES (:group_id, :created_by, :name, :amount)
+            INSERT INTO group_expense (group_id, created_by, name, amount, category)
+            VALUES (:group_id, :created_by, :name, :amount, :category)
             RETURNING id
         ');
 
@@ -14,6 +14,7 @@ class ExpenseRepository extends Repository {
         $stmt->bindParam(':created_by', $createdBy, PDO::PARAM_INT);
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':amount', $amount);
+        $stmt->bindParam(':category', $category, PDO::PARAM_STR);
         
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

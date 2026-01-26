@@ -5,7 +5,7 @@ require_once __DIR__ . '/../services/GroupService.php';
 
 class ExpenseController extends AppController {
     private $expenseService;
-    private $groupRepository;
+    private $groupService;
 
     public function __construct() {
         $this->expenseService = new ExpenseService();

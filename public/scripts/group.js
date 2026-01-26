@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         allExpenses = data.expenses;
         renderMembers(data.members);
         renderTable(allExpenses);
+        initCategoryOptions(allExpenses);
         initCustomSelects(data.members);
         initPaymentForm(data.members);
       } else {
@@ -47,9 +48,20 @@ function renderTable(expenses) {
             <td><strong>${e.amount} PLN</strong></td>
             <td>${new Date(e.created_at).toLocaleDateString()}</td>
             <td>${e.firstname}</td>
-            <td><span class="tag ${e.amount > 100 ? 'tag-food' : 'tag-bills'}">Inne</span></td>
+            <td><span class="tag ${getCategoryTagClass(e.category)}">${getCategoryLabel(e.category)}</span></td>
         </tr>
     `).join('');
+}
+
+function getCategoryLabel(category) {
+  return category && category.trim().length > 0 ? category : 'Inne';
+}
+
+function getCategoryTagClass(category) {
+  const label = getCategoryLabel(category).toLowerCase();
+  if (label.includes('jedzenie') || label.includes('zakupy')) return 'tag-food';
+  if (label.includes('rachunki')) return 'tag-bills';
+  return 'tag-bills';
 }
 
 function initCustomSelects(members) {
@@ -90,6 +102,23 @@ function initCustomSelects(members) {
   window.addEventListener('click', () => {
     document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
   });
+}
+
+function initCategoryOptions(expenses) {
+  const select = document.querySelector('#category-dropdown .select-options');
+  if (!select) return;
+
+  const categories = new Set();
+  expenses.forEach(e => {
+    categories.add(getCategoryLabel(e.category));
+  });
+
+  const options = ['Wszystkie kategorie', ...Array.from(categories).sort()];
+  select.innerHTML = options.map((opt, idx) => `
+    <div class="option ${idx === 0 ? 'selected' : ''}" data-value="${opt}">
+      ${opt}
+    </div>
+  `).join('');
 }
 
 function initPaymentForm(members) {
@@ -160,12 +189,17 @@ function initPaymentForm(members) {
 function applyFilters() {
   const selectedPerson = document.querySelector('#person-dropdown .option.selected');
   const selectedSort = document.querySelector('#sort-dropdown .option.selected');
+  const selectedCategory = document.querySelector('#category-dropdown .option.selected');
 
   const person = selectedPerson ? selectedPerson.dataset.value : 'all';
   const sort = selectedSort ? selectedSort.dataset.value : 'desc';
+  const category = selectedCategory ? selectedCategory.dataset.value : 'Wszystkie kategorie';
 
   let filtered = [...allExpenses];
   if (person !== 'all') filtered = filtered.filter(e => e.firstname === person);
+  if (category !== 'Wszystkie kategorie') {
+    filtered = filtered.filter(e => getCategoryLabel(e.category) === category);
+  }
 
   filtered.sort((a, b) => sort === 'desc' ?
     new Date(b.created_at) - new Date(a.created_at) :

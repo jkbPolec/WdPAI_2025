@@ -29,13 +29,13 @@ VALUES
     (2, 2),
     (2, 3);
 
-INSERT INTO group_expense (id, group_id, created_by, name, amount)
+INSERT INTO group_expense (id, group_id, created_by, name, amount, category)
 VALUES
-    (1, 1, 1, 'Zakupy spozywcze', 150.00),
-    (2, 1, 2, 'Srodki czystosci', 60.00),
-    (3, 1, 3, 'Rachunek za internet', 90.00),
-    (4, 2, 1, 'Noclegi', 300.00),
-    (5, 2, 2, 'Transport', 120.00);
+    (1, 1, 1, 'Zakupy spozywcze', 150.00, 'Zakupy spozywcze'),
+    (2, 1, 2, 'Srodki czystosci', 60.00, 'Rachunki'),
+    (3, 1, 3, 'Rachunek za internet', 90.00, 'Rachunki'),
+    (4, 2, 1, 'Noclegi', 300.00, 'Rozrywka'),
+    (5, 2, 2, 'Transport', 120.00, 'Rozrywka');
 
 INSERT INTO group_expense_user (expense_id, user_id)
 VALUES
