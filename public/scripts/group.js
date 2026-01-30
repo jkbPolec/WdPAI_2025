@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTable(allExpenses);
         initCategoryOptions(allExpenses);
         initCustomSelects(data.members);
-        initPaymentForm(data.members);
+        initPaymentForm(data.members, data.current_user_id);
         initMemberManagement(data);
       } else {
         alert(result.message);
@@ -124,30 +124,45 @@ function initCategoryOptions(expenses) {
   `).join('');
 }
 
-function initPaymentForm(members) {
+function initPaymentForm(members, currentUserId) {
   const toggle = document.getElementById('toggle-payment');
   const form = document.getElementById('payment-form');
-  const userSelect = document.getElementById('payment-user');
+
+  const dropdown = document.getElementById('payment-user-dropdown');
+  const optionsContainer = document.getElementById('payment-user-options');
+  const triggerSpan = document.querySelector('#payment-user-dropdown .select-trigger span');
+  const hiddenInput = document.getElementById('selected-payment-user-id');
+
   const submitBtn = document.getElementById('payment-submit');
   const amountInput = document.getElementById('payment-amount');
 
-  if (!toggle || !form || !userSelect || !submitBtn || !amountInput) return;
+  if (!toggle || !form || !dropdown || !optionsContainer || !submitBtn || !amountInput) return;
 
   toggle.addEventListener('click', () => {
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
   });
 
-  userSelect.innerHTML = '<option value=\"\">Wybierz użytkownika</option>';
-  members.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m.id;
+  optionsContainer.innerHTML = '';
+  members.filter(m => String(m.id) !== String(currentUserId)).forEach(m => {
+    const opt = document.createElement('div');
+    opt.className = 'option';
+    opt.dataset.value = m.id;
     opt.textContent = `${m.firstname} ${m.lastname}`;
-    userSelect.appendChild(opt);
+
+    opt.addEventListener('click', () => {
+      optionsContainer.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      triggerSpan.textContent = opt.textContent;
+      hiddenInput.value = m.id;
+      dropdown.classList.remove('active');
+    });
+
+    optionsContainer.appendChild(opt);
   });
 
   submitBtn.addEventListener('click', () => {
     const amount = parseFloat(amountInput.value);
-    const toUser = parseInt(userSelect.value, 10);
+    const toUser = hiddenInput.value;
 
     if (!groupId) {
       alert('Brak ID grupy.');
@@ -171,21 +186,22 @@ function initPaymentForm(members) {
       },
       body: body.toString()
     })
-      .then(res => res.json())
-      .then(result => {
-        if (result.status === 'success') {
-          alert('Płatność dodana.');
-          amountInput.value = '';
-          userSelect.value = '';
-          window.location.reload();
-        } else {
-          alert(result.message || 'Błąd podczas zapisu płatności.');
-        }
-      })
-      .catch(() => alert('Błąd połączenia z serwerem.'))
-      .finally(() => {
-        submitBtn.disabled = false;
-      });
+        .then(res => res.json())
+        .then(result => {
+          if (result.status === 'success') {
+            alert('Płatność dodana.');
+            amountInput.value = '';
+            hiddenInput.value = '';
+            triggerSpan.textContent = "Wybierz użytkownika";
+            window.location.reload();
+          } else {
+            alert(result.message || 'Błąd podczas zapisu płatności.');
+          }
+        })
+        .catch(() => alert('Błąd połączenia z serwerem.'))
+        .finally(() => {
+          submitBtn.disabled = false;
+        });
   });
 }
 

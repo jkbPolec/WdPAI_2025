@@ -35,9 +35,15 @@
         <h3>Dodaj rozliczenie</h3>
         <div class="payment-fields">
           <input type="number" step="0.01" min="0" id="payment-amount" placeholder="Kwota (PLN)">
-          <select id="payment-user">
-            <option value="">Wybierz użytkownika</option>
-          </select>
+          <div class="custom-select" id="payment-user-dropdown">
+            <div class="select-trigger">
+              <span>Wybierz użytkownika</span>
+              <div class="arrow"></div>
+            </div>
+            <div class="select-options" id="payment-user-options">
+            </div>
+            <input type="hidden" id="selected-payment-user-id" value="">
+          </div>
           <button type="button" id="payment-submit">Zapisz</button>
         </div>
         <p class="payment-note">Formularz nie jest połączony z API.</p>

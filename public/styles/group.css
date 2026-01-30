@@ -19,14 +19,28 @@
 
 .btn-settle {
   background: white;
-  border: 1px solid #e2e8f0;
+  color: var(--main-color);
+  border: 1.5px solid rgba(19, 164, 236, 0.2);
   padding: 0.8rem 1.5rem;
-  border-radius: 0.6rem;
+  border-radius: 0.8rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 600;
+  gap: 10px;
+  font-weight: 700;
+  font-family: var(--main-font);
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-settle:hover {
+  background: rgba(19, 164, 236, 0.04);
+  border-color: var(--main-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(19, 164, 236, 0.1);
+}
+
+.btn-settle img {
+  filter: invert(48%) sepia(85%) saturate(1800%) hue-rotate(175deg) brightness(95%) contrast(101%);
 }
 
 .btn-add-expense {
@@ -44,63 +58,89 @@
 
 .payment-form {
   background: white;
-  border-radius: 1rem;
-  border: 1px solid rgba(19, 164, 236, 0.15);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.03);
-  padding: 1.5rem 1.8rem;
-  margin-bottom: 2.5rem;
+  border-radius: 1.2rem; /* Spójne z .table-card */
+  border: 1px solid rgba(19, 164, 236, 0.1);
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+  margin-bottom: 3rem;
+  animation: fadeIn 0.4s ease-out; /* Dodajemy animację pojawiania się */
 }
 
 .payment-form h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 800;
   color: var(--h1-color);
+  letter-spacing: -0.4px;
 }
 
 .payment-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 1rem;
+  grid-template-columns: 1fr 1.5fr auto;
+  gap: 1.2rem;
   align-items: center;
 }
 
+/* 3. Stylizacja inputów i selectów w formularzu */
 .payment-fields input,
 .payment-fields select {
   background: #fcfdfe;
   border: 1px solid #e2e8f0;
-  border-radius: 0.7rem;
-  padding: 0.8rem 1rem;
-  font-size: 0.9rem;
+  border-radius: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  font-size: 0.95rem;
+  font-family: var(--main-font);
   color: var(--h1-color);
   outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .payment-fields input:focus,
 .payment-fields select:focus {
-  border-color: rgba(19, 164, 236, 0.6);
-  box-shadow: 0 0 0 3px rgba(19, 164, 236, 0.12);
+  border-color: var(--main-color);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(19, 164, 236, 0.1);
 }
 
+/* Wygląd przycisku "Zapisz" w formularzu */
 .payment-fields button {
   background: var(--main-color);
   color: white;
   border: none;
-  padding: 0.8rem 1.4rem;
-  border-radius: 0.7rem;
-  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border-radius: 0.8rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
-  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(19, 164, 236, 0.2);
 }
 
-.payment-fields button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.payment-fields button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(19, 164, 236, 0.3);
+}
+
+.payment-fields button:active {
+  transform: translateY(0);
 }
 
 .payment-note {
-  margin: 0.8rem 0 0;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
   font-size: 0.85rem;
   color: var(--small-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-note::before {
+  content: 'ℹ';
+  font-size: 1rem;
 }
 
 .member-management {
@@ -207,6 +247,11 @@
 
   .payment-fields {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .payment-form {
+    padding: 1.5rem;
   }
 
   .payment-fields button {
@@ -394,4 +439,9 @@
 .tag-bills {
   background: #dcfce7;
   color: #15803d;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
