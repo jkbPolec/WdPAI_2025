@@ -1,3 +1,6 @@
+.status-positive { color: #10b981; }
+.status-negative { color: #ef4444; }
+
 .dashboard-header {
   margin-bottom: 2.5rem;
   animation: fadeIn 0.6s ease-out;
@@ -129,6 +132,68 @@
   box-shadow: 0 10px 20px rgba(19, 164, 236, 0.1);
 }
 
+.summary-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.summary-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(19, 164, 236, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary-status {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.status-positive { color: #10b981; }
+.status-negative { color: #ef4444; }
+
+.summary-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--h1-color);
+  margin: 0.2rem 0 0.8rem 0;
+  letter-spacing: -1px;
+}
+
+.summary-mobile {
+  display: none;
+}
+
+.summary-desktop {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(19, 164, 236, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+}
+
+.summary-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--h1-color);
+  margin: 0.5rem 0;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -139,6 +204,62 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@media screen and (max-width: 768px) {
+  .summary-container {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-value {
+    font-size: 2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .summary-desktop {
+      display: none;
+    }
+
+    .summary-mobile {
+      display: block;
+    }
+
+    .mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .mobile-main-card {
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0,0,0,0.03);
+      margin-bottom: 2rem;
+    }
+
+    .net-balance-value {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin: 0.5rem 0 1.5rem 0;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: #edf2f7;
+      margin-bottom: 1.5rem;
+    }
+
+    .balance-details p {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 4px 0;
+    }
+  }
+
 }
 
 @media screen and (max-width: 1200px) {
@@ -160,7 +281,7 @@
 
   .dashboard-header,
   .section-title {
-    text-align: center;
+    text-align: left;
   }
 
   .group-card {

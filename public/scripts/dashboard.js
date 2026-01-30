@@ -21,29 +21,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderGroups(groups, container, template) {
   container.innerHTML = "";
+  let totalDebt = 0;
+  let totalCredit = 0;
 
   groups.forEach(group => {
+    const balance = parseFloat(group.balance);
+    if (balance < 0) totalDebt += Math.abs(balance);
+    else if (balance > 0) totalCredit += balance;
+
     const clone = template.content.cloneNode(true);
     const cardLink = clone.querySelector(".group-card");
     cardLink.href = `/group?id=${group.id}`;
 
     clone.querySelector(".group-name").textContent = group.name;
-
     const balanceValue = clone.querySelector(".balance-value");
-    const balance = parseFloat(group.balance);
 
     if (balance > 0) {
-      balanceValue.textContent = `Jesteś na plusie: ${balance.toFixed(2)} zł`;
+      balanceValue.textContent = `Jesteś na plusie: ${balance.toFixed(2).replace('.', ',')} zł`;
       balanceValue.classList.add("balance-positive");
     } else if (balance < 0) {
-      balanceValue.textContent = `Musisz oddać: ${Math.abs(balance).toFixed(2)} zł`;
+      balanceValue.textContent = `Musisz oddać: ${Math.abs(balance).toFixed(2).replace('.', ',')} zł`;
       balanceValue.classList.add("balance-negative");
     } else {
-      balanceValue.textContent = "Rozliczony na zero";
+      balanceValue.textContent = "Wszystko rozliczone";
     }
 
     container.appendChild(clone);
   });
+
+  const netBalance = totalCredit - totalDebt;
+  const formattedDebt = `${totalDebt.toFixed(2).replace('.', ',')} zł`;
+  const formattedCredit = `${totalCredit.toFixed(2).replace('.', ',')} zł`;
+  const formattedNet = `${netBalance > 0 ? '+' : ''}${netBalance.toFixed(2).replace('.', ',')} zł`;
+
+  // Aktualizacja Desktop
+  document.querySelector('.desk-debt').textContent = formattedDebt;
+  document.querySelector('.desk-credit').textContent = formattedCredit;
+
+  // Aktualizacja Mobile
+  document.querySelector('.net-balance-value').textContent = formattedNet;
+  document.querySelector('.mob-debt').textContent = formattedDebt;
+  document.querySelector('.mob-credit').textContent = formattedCredit;
 
   renderAddButton(container);
 }
