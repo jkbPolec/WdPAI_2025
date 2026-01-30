@@ -84,9 +84,6 @@ class GroupService extends Service
         $allMembers = $this->groupRepository->getGroupMembers($groupId);
         $membersForDisplay = [];
         foreach ($allMembers as $member) {
-            if ((int)$member['id'] === $userId) {
-                continue;
-            }
             $memberId = (int)$member['id'];
             $member['balance'] = $memberBalances[$memberId] ?? 0.0;
             $membersForDisplay[] = $member;

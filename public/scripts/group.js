@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById('group-title').textContent = `Wydatki: ${data.group.name}`;
         allExpenses = data.expenses;
-        renderMembers(data.members);
+        renderMembers(data.members, data.current_user_id);
         renderTable(allExpenses);
         initCategoryOptions(allExpenses);
         initCustomSelects(data.members);
@@ -26,9 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function renderMembers(members) {
+function renderMembers(members, currentUserId) {
   const container = document.getElementById('members-container');
-  container.innerHTML = members.map(m => `
+  container.innerHTML = members
+      .filter(m => String(m.id) !== String(currentUserId))
+      .map(m => `
         <div class="member-status-card">
             <img src="https://img.icons8.com/material-sharp/40/000000/user-male-circle.png" class="member-avatar">
             <div class="member-info">
