@@ -32,7 +32,7 @@ class SecurityController extends AppController
             exit();
         }
 
-        return $this->render('login', ["messages" => $result['message']]);
+        return $this->render('login', ["error" => $result['message']]);
     }
 
     public function register()
@@ -40,7 +40,7 @@ class SecurityController extends AppController
         if ($this->isGet()) return $this->render('register');
 
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
-            return $this->render('register', ['messages' => 'Błąd CSRF.']);
+            return $this->render('register', ['error' => 'Błąd CSRF.']);
         }
 
         $result = $this->securityService->register($_POST);
@@ -49,7 +49,7 @@ class SecurityController extends AppController
             return $this->render('login', ["messages" => $result['message']]);
         }
 
-        return $this->render('register', ["messages" => $result['message']]);
+        return $this->render('register', ["error" => $result['message']]);
     }
 
     public function logout()

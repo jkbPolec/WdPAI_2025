@@ -35,6 +35,14 @@
     </p>
 
     <?php endif; ?>
+
+    <?php if(isset($error)): ?>
+
+    <p class="error">
+      <?= $error ?>
+    </p>
+
+    <?php endif; ?>
     <div class="input-container">
       <label for="email">Email</label>
       <div class="input-wrapper">
