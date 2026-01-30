@@ -50,8 +50,18 @@ class SecurityService extends Service
             return $this->error("Podane hasła nie są identyczne.");
         }
 
+        if (!$this->isValidEmail($email)) {
+            return $this->error("Nieprawidłowy format adresu email.");
+        }
+
         if ($this->userRepository->getUserByEmail($email)) {
             return $this->error("Użytkownik z tym mailem już istnieje.");
+        }
+
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
+            return $this->error(
+                "Hasło musi mieć min. 8 znaków, dużą literę, małą literę, cyfrę i znak specjalny."
+            );
         }
 
         try {
@@ -61,5 +71,10 @@ class SecurityService extends Service
         } catch (Exception $e) {
             return $this->error("Błąd podczas rejestracji.");
         }
+    }
+
+    private function isValidEmail(string $email): bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 }
