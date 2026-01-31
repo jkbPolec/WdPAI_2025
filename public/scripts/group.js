@@ -2,16 +2,18 @@ let allExpenses = [];
 const urlParams = new URLSearchParams(window.location.search);
 const groupId = urlParams.get('id');
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (!groupId) return;
-
+if (groupId) {
   fetch(`/getGroupDetails?id=${groupId}`)
     .then(res => res.json())
     .then(result => {
       if (result.status === 'success') {
         const data = result.data;
 
-        document.getElementById('group-title').textContent = `${data.group.name}`;
+        const titleElement = document.getElementById('group-title');
+        if (titleElement) {
+          titleElement.textContent = data.group.name;
+        }
+
         allExpenses = data.expenses;
         renderMembers(data.members, data.current_user_id);
         renderTable(allExpenses);
@@ -19,12 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
         initCustomSelects(data.members);
         initPaymentForm(data.members, data.current_user_id);
         initMemberManagement(data);
+
       } else {
         alert(result.message);
         window.location.href = "/dashboard";
       }
+    })
+    .catch(err => {
+      console.error("Błąd sieci lub serwera:", err);
     });
-});
+}
 
 function renderMembers(members, currentUserId) {
   const container = document.getElementById('members-container');

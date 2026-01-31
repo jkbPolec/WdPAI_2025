@@ -1,10 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const groupId = urlParams.get('groupId');
-  const participantsList = document.getElementById('participants-list');
-  const groupIdInput = document.getElementById('group-id-input');
+const urlParams = new URLSearchParams(window.location.search);
+const groupId = urlParams.get('groupId');
+const participantsList = document.getElementById('participants-list');
+const groupIdInput = document.getElementById('group-id-input');
 
-  if (!groupId) return;
+if (groupId && groupIdInput && participantsList) {
   groupIdInput.value = groupId;
 
   fetch(`/getGroupDetails?id=${groupId}`)
@@ -21,5 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `).join('');
       }
-    });
-});
+    })
+    .catch(err => console.error("Błąd pobierania danych:", err));
+}

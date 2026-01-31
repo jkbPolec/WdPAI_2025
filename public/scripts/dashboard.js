@@ -1,22 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.querySelector(".groups-container");
-  const template = document.querySelector("#group-card-template");
+const container = document.querySelector(".groups-container");
+const template = document.querySelector("#group-card-template");
 
-  if (container && template) {
-    fetch("/getGroups")
-      .then(response => response.json())
-      .then(result => {
-        const groups = result.data;
+if (container && template) {
+  fetch("/getGroups")
+    .then(response => response.json())
+    .then(result => {
+      const groups = result.data;
 
-        if (!groups || groups.length === 0) {
-          renderAddButton(container);
-          return;
-        }
+      if (!groups || groups.length === 0) {
+        renderAddButton(container);
+      } else {
         renderGroups(groups, container, template);
-      })
-      .catch(error => console.error('Błąd pobierania grup:', error));
-  }
-});
+      }
+    })
+    .catch(error => console.error('Błąd pobierania grup:', error));
+}
 
 function renderGroups(groups, container, template) {
   container.innerHTML = "";
