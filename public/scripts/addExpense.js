@@ -12,14 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(result => {
       if (result.status === 'success') {
         const members = result.data.all_members || result.data.members || [];
-        participantsList.innerHTML = members.map(m => `
-                    <div class="participant-item">
-                        <input type="checkbox" name="participants[]" value="${m.id}" id="user-${m.id}" checked>
-                        <label class="participant-label" for="user-${m.id}">
-                            ${m.firstname} ${m.lastname}
-                        </label>
-                    </div>
-                `).join('');
+          participantsList.innerHTML = members.map(m => `
+            <div class="participant-item">
+              <input type="checkbox" name="participants[]" value="${m.id}" id="user-${m.id}" checked>
+                <label class="participant-label" for="user-${m.id}">
+                  <span class="custom-checkbox"></span>
+                  <span class="participant-name">${m.firstname} ${m.lastname}</span>
+                </label>
+            </div>
+        `).join('');
       }
     });
 });
