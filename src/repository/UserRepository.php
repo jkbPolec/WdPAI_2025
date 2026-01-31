@@ -28,7 +28,6 @@ class UserRepository extends Repository
             return null;
         }
 
-        // Etap drugi: Mapowanie tablicy na obiekt Entity
         return new User(
             $row['id'],
             $row['firstname'],

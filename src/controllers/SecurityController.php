@@ -46,7 +46,7 @@ class SecurityController extends AppController
 
     public function register()
     {
-        if ($this->isGet()) {
+        if (!$this->isPost()) {
             return $this->render('register');
         }
 

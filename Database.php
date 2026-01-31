@@ -9,7 +9,7 @@ class Database
   private $username;
   private $password;
   private $host;
-  //private $conn;
+  private $conn;
   private $database;
 
   public function __construct()
@@ -30,7 +30,6 @@ class Database
         ["sslmode"  => "prefer"]
       );
 
-      // set the PDO error mode to exception
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $conn;
     } catch (PDOException $e) {
@@ -42,9 +41,9 @@ class Database
     }
   }
 
-  public function disconnect($conn)
+  public function disconnect()
   {
-    //this->conn = null;
+    $this->conn = null;
   }
 
   private function isMissingDatabaseError(PDOException $e): bool

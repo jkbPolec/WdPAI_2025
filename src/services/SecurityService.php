@@ -16,6 +16,10 @@ class SecurityService extends Service
 
     public function login(LoginDTO $data): array
     {
+        if (strlen($data->getEmail()) > 100 || strlen($data->getPassword()) > 100) {
+            return $this->error("Przekroczono limit długości danych wejściowych.");
+        }
+
         $user = $this->userRepository->getUserByEmail($data->getEmail());
 
         if (!$user || !password_verify($data->getPassword(), $user->getPassword())) {
@@ -31,6 +35,15 @@ class SecurityService extends Service
 
     public function register(RegisterUserDTO $data): array
     {
+        if (
+            strlen($data->email) > 100 ||
+            strlen($data->password) > 100 ||
+            strlen($data->firstname) > 50 ||
+            strlen($data->lastname ?? '') > 50
+        ) {
+            return $this->error("Dane wejściowe przekraczają dozwoloną długość.");
+        }
+
         if (empty($data->email) || empty($data->password) || empty($data->firstname)) {
             return $this->error("Wszystkie pola są wymagane.");
         }
