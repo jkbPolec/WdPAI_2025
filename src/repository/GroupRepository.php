@@ -1,5 +1,6 @@
 <?php
 require_once 'Repository.php';
+require_once __DIR__ . '/../models/Group.php';
 
 class GroupRepository extends Repository {
 
@@ -30,22 +31,29 @@ class GroupRepository extends Repository {
     }
 
     public function getGroupsByUserId(int $userId): array {
-    $stmt = $this->database->connect()->prepare('
-        SELECT g.id, g.name, g.description
-        FROM "group" g
-        JOIN group_user gu ON g.id = gu.group_id
-        WHERE gu.user_id = :userId
-    ');
-    $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $stmt->execute();
+        $stmt = $this->database->connect()->prepare('
+            SELECT g.* FROM "group" g
+            JOIN group_user gu ON g.id = gu.group_id
+            WHERE gu.user_id = :userId
+        ');
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $groups = [];
+        foreach ($rows as $row) {
+            $groups[] = new Group($row['id'], $row['name'], $row['description'], $row['owner']);
+        }
+        return $groups;
     }
 
-    public function getGroupDetails(int $groupId): ?array {
+    public function getGroupDetails(int $groupId): ?Group {
         $stmt = $this->database->connect()->prepare('SELECT * FROM "group" WHERE id = ?');
         $stmt->execute([$groupId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) return null;
+        return new Group($row['id'], $row['name'], $row['description'], $row['owner']);
     }
 
     public function getGroupMembers(int $groupId): array {

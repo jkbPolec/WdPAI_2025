@@ -3,6 +3,7 @@
 require_once 'Service.php';
 require_once __DIR__ . '/../repository/MemberRepository.php';
 require_once __DIR__ . '/../repository/GroupRepository.php';
+require_once __DIR__ . '/../models/Group.php';
 
 class MemberService extends Service
 {
@@ -19,7 +20,8 @@ class MemberService extends Service
     {
         $group = $this->groupRepository->getGroupDetails($groupId);
         if (!$group) return $this->error("Grupa nie istnieje", 404);
-        if ((int)$group['owner'] !== $requesterId) {
+
+        if ((int)$group->getOwner() !== $requesterId) {
             return $this->error("Tylko właściciel grupy może zapraszać użytkowników.", 403);
         }
 
@@ -38,12 +40,13 @@ class MemberService extends Service
     {
         $group = $this->groupRepository->getGroupDetails($groupId);
         if (!$group) return $this->error("Grupa nie istnieje", 404);
-        if ((int)$group['owner'] !== $requesterId) {
+        if ((int)$group->getOwner() !== $requesterId) {
             return $this->error("Tylko właściciel grupy może usuwać użytkowników.", 403);
         }
-        if ((int)$group['owner'] === $memberId) {
+        if ((int)$group->getOwner() === $memberId) {
             return $this->error("Nie można usunąć właściciela grupy.");
         }
+
 
         if (!$this->memberRepository->isUserInGroup($groupId, $memberId)) {
             return $this->error("Użytkownik nie należy do tej grupy.", 404);

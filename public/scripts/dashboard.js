@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const groups = result.data;
 
         if (!groups || groups.length === 0) {
-          container.innerHTML = "<p>Nie należysz jeszcze do żadnej grupy.</p>";
           renderAddButton(container);
           return;
         }

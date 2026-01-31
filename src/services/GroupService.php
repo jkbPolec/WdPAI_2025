@@ -6,6 +6,8 @@ require_once __DIR__ . '/../repository/UserRepository.php';
 require_once __DIR__ . '/../services/MemberService.php';
 require_once __DIR__ . '/../repository/ExpenseRepository.php';
 require_once __DIR__ . '/../repository/PaymentRepository.php';
+require_once __DIR__ . '/../dto/CreateGroupDTO.php';
+require_once __DIR__ . '/../models/Group.php';
 
 class GroupService extends Service
 {
@@ -24,24 +26,17 @@ class GroupService extends Service
         $this->memberService = new MemberService();
     }
 
-    public function createGroup(array $data): array
+    public function createGroup(CreateGroupDTO $dto): array
     {
         $ownerId = $this->getCurrentUserId();
         if (!$ownerId) return $this->error("Użytkownik nie jest zalogowany", 401);
 
-        if (!$this->validate($data, ['name'])) {
-            return $this->error("Nazwa grupy jest wymagana");
-        }
-
         try {
-            $groupId = $this->groupRepository->createGroup($data['name'], $data['description'] ?? '', $ownerId);
+            $groupId = $this->groupRepository->createGroup($dto->name, $dto->description, $ownerId);
             $this->groupRepository->addMember($groupId, $ownerId);
 
-            $emails = json_decode($data['members'] ?? '[]', true);
-            if (is_array($emails)) {
-                foreach ($emails as $email) {
-                    $this->memberService->addMemberByEmail($groupId, $email, $ownerId);
-                }
+            foreach ($dto->memberEmails as $email) {
+                $this->memberService->addMemberByEmail($groupId, $email, $ownerId);
             }
 
             return $this->success(['id' => $groupId], "Grupa została utworzona");
@@ -53,16 +48,19 @@ class GroupService extends Service
     public function getUserGroups(): array
     {
         $userId = $this->getCurrentUserId();
-        if (!$userId) return $this->error("Nieautoryzowany", 401);
-
         $groups = $this->groupRepository->getGroupsByUserId($userId);
 
-        foreach ($groups as &$group) {
-            $balanceData = $this->calculateGroupBalances((int)$group['id'], $userId);
-            $group['balance'] = $balanceData['user_balance'];
+        $result = [];
+        foreach ($groups as $group) {
+            $balanceData = $this->calculateGroupBalances((int)$group->getId(), $userId);
+            $result[] = [
+                'id' => $group->getId(),
+                'name' => $group->getName(),
+                'description' => $group->getDescription(),
+                'balance' => $balanceData['user_balance']
+            ];
         }
-
-        return $this->success($groups);
+        return $this->success($result);
     }
 
     public function getFullGroupDetails(int $groupId): array
@@ -76,8 +74,8 @@ class GroupService extends Service
             return $this->error("Nie masz uprawnień do przeglądania tej grupy.", 403);
         }
 
-        $group = $this->groupRepository->getGroupDetails($groupId);
-        if (!$group) {
+        $groupEntity = $this->groupRepository->getGroupDetails($groupId);
+        if (!$groupEntity) {
             return $this->error("Grupa nie istnieje", 404);
         }
 
@@ -92,7 +90,12 @@ class GroupService extends Service
         }
 
         $data = [
-            'group' => $group,
+            'group' => [
+                'id' => $groupEntity->getId(),
+                'name' => $groupEntity->getName(),
+                'description' => $groupEntity->getDescription(),
+                'owner' => $groupEntity->getOwner()
+            ],
             'members' => $membersForDisplay,
             'all_members' => $allMembers,
             'current_user_id' => $userId,

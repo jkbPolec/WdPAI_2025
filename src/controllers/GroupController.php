@@ -18,7 +18,13 @@ class GroupController extends AppController
             return $this->render('addGroup');
         }
 
-        $result = $this->groupService->createGroup($_POST);
+        $dto = new CreateGroupDTO(
+            $_POST['name'] ?? '',
+            $_POST['description'] ?? '',
+            $_POST['members'] ?? '[]'
+        );
+
+        $result = $this->groupService->createGroup($dto);
 
         if ($result['status'] === 'success') {
             header("Location: /dashboard");
