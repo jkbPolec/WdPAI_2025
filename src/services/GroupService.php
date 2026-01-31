@@ -38,8 +38,10 @@ class GroupService extends Service
             $this->groupRepository->addMember($groupId, $ownerId);
 
             $emails = json_decode($data['members'] ?? '[]', true);
-            foreach ($emails as $email) {
-                $this->memberService->addMemberByEmail($groupId, $email, $ownerId);
+            if (is_array($emails)) {
+                foreach ($emails as $email) {
+                    $this->memberService->addMemberByEmail($groupId, $email, $ownerId);
+                }
             }
 
             return $this->success(['id' => $groupId], "Grupa została utworzona");
