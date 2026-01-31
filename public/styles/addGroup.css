@@ -1,3 +1,21 @@
+/* --- UKŁAD GŁÓWNY --- */
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  background-color: var(--background-color);
+}
+
+/* --- NAGŁÓWEK ZE ZDJĘCIA --- */
+.page-header {
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
 .page-header h1 {
   color: var(--h1-color);
   font-size: 2rem;
@@ -7,61 +25,78 @@
 
 .page-header p {
   color: var(--small-color);
-  margin: 0.5rem 0 2rem 0;
+  margin-top: 0.5rem;
 }
 
+.mobile-close-btn {
+  display: none; /* Ukryte na desktop */
+}
+
+/* --- STYLIZACJA INPUTÓW (Spójna z resztą projektu) --- */
 .form-card {
   background: white;
-  padding: 2.5rem;
-  border-radius: 1rem;
+  padding: 3rem;
+  border-radius: 1.5rem;
   max-width: 800px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  border: 1px solid #f1f5f9;
+  border: 1px solid rgba(19, 164, 236, 0.1);
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08);
 }
 
 .field-group {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
 }
 
 .field-group label {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--small-label-color);
+  font-family: var(--main-font);
 }
 
-.field-group input,
-.field-group textarea {
-  padding: 0.8rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.6rem;
-  font-size: 0.95rem;
-  font-family: inherit;
+input, textarea {
+  background-color: #fcfdfe;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  font-size: 1rem;
+  color: var(--h1-color);
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  font-family: var(--main-font);
+}
+
+input:focus, textarea:focus {
+  border-color: var(--main-color);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(19, 164, 236, 0.1);
 }
 
 .email-tags {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
   margin-top: 1rem;
 }
 
 .tag {
-  background: #f8fafc;
-  padding: 0.8rem 1rem;
-  border-radius: 0.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .tag .remove {
   cursor: pointer;
-  color: #94a3b8;
-  font-size: 1.2rem;
+  color: #ef4444;
+  font-weight: 800;
 }
 
 .form-footer {
@@ -73,21 +108,92 @@
   border-top: 1px solid #f1f5f9;
 }
 
-.btn-cancel {
-  background: #f1f5f9;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  font-weight: 600;
-}
-
 .btn-submit {
   background: var(--main-color);
   color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.8rem;
+  font-weight: 700;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 0.6rem;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(19, 164, 236, 0.2);
+}
+
+.btn-cancel {
+  background: transparent;
+  color: var(--small-color);
+  padding: 1rem 1.5rem;
   font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+/* --- MEDIA QUERIES (WIDOK ZE ZDJĘCIA) --- */
+@media screen and (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 0 0 120px 0; /* Miejsce na przyciski na dole */
+  }
+
+  /* Wygląd headera dokładnie ze zdjęcia */
+  .page-header {
+    background: white;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 0;
+  }
+
+  .page-header h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    width: 100%;
+    letter-spacing: -0.5px;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-close-btn {
+    display: block;
+    position: absolute;
+    left: 20px;
+    font-size: 1.4rem;
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 300;
+  }
+
+  .form-card {
+    background: transparent;
+    padding: 1.5rem;
+    box-shadow: none;
+    border: none;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    padding: 1.5rem;
+    border-top: none;
+  }
+
+  .btn-submit {
+    order: 1;
+    width: 100%;
+    padding: 1.2rem;
+  }
+
+  .btn-cancel {
+    order: 2;
+    width: 100%;
+    background: #f1f5f9;
+    color: #64748b;
+    border-radius: 0.8rem;
+  }
 }
