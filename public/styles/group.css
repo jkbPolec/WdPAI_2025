@@ -237,6 +237,82 @@
 }
 
 @media screen and (max-width: 768px) {
+
+  .table-filters {
+    flex-direction: column; /* Filtry jeden pod drugim */
+    gap: 0.8rem;
+    z-index: 10;
+  }
+
+  .custom-select {
+    width: 100%; /* Dropdowny na całą szerokość */
+  }
+
+  /* --- Zmiana tabeli w karty --- */
+  .table-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .expenses-table thead {
+    display: none; /* Ukrywamy nagłówki tabeli */
+  }
+
+  .expenses-table,
+  .expenses-table tbody,
+  .expenses-table tr,
+  .expenses-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .expenses-table tr {
+    background: white;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(19, 164, 236, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  }
+
+  .expenses-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .expenses-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Wyświetlanie etykiet z data-label */
+  .expenses-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-align: left;
+  }
+
+  /* Specjalne traktowanie dla opisu, żeby był wyraźniejszy */
+  .expenses-table td[data-label="OPIS"] {
+    font-size: 1.1rem;
+    font-weight: 800;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .expenses-table td[data-label="OPIS"]::before {
+    display: none;
+  }
+
   .group-header {
     flex-direction: column;
     gap: 1.2rem;
@@ -326,6 +402,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
+  z-index: 10;
 }
 
 .custom-select {

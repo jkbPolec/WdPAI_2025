@@ -47,11 +47,11 @@ function renderTable(expenses) {
   const body = document.getElementById('expenses-body');
   body.innerHTML = expenses.map(e => `
         <tr>
-            <td>${e.name}</td>
-            <td><strong>${e.amount} PLN</strong></td>
-            <td>${new Date(e.created_at).toLocaleDateString()}</td>
-            <td>${e.firstname}</td>
-            <td><span class="tag ${getCategoryTagClass(e.category)}">${getCategoryLabel(e.category)}</span></td>
+            <td data-label="OPIS">${e.name}</td>
+            <td data-label="KWOTA"><strong>${e.amount} PLN</strong></td>
+            <td data-label="DATA">${new Date(e.created_at).toLocaleDateString()}</td>
+            <td data-label="KTO ZAPŁACIŁ">${e.firstname}</td>
+            <td data-label="KATEGORIA"><span class="tag ${getCategoryTagClass(e.category)}">${getCategoryLabel(e.category)}</span></td>
         </tr>
     `).join('');
 }
