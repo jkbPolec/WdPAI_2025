@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (result.status === 'success') {
         const data = result.data;
 
-        document.getElementById('group-title').textContent = `Wydatki: ${data.group.name}`;
+        document.getElementById('group-title').textContent = `${data.group.name}`;
         allExpenses = data.expenses;
         renderMembers(data.members, data.current_user_id);
         renderTable(allExpenses);
@@ -207,6 +207,7 @@ function initPaymentForm(members, currentUserId) {
 
 function initMemberManagement(data) {
   const section = document.getElementById('member-management');
+  const toggleBtn = document.getElementById('toggle-members-btn');
   const list = document.getElementById('member-list');
   const addBtn = document.getElementById('member-add-btn');
   const emailInput = document.getElementById('member-email-input');
@@ -217,7 +218,14 @@ function initMemberManagement(data) {
   const isOwner = String(data.group.owner) === String(currentUserId);
   if (!isOwner) return;
 
-  section.style.display = 'block';
+  toggleBtn.style.display = 'flex';
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = section.style.display === 'none' || section.style.display === '';
+    section.style.display = isHidden ? 'block' : 'none';
+
+    toggleBtn.classList.toggle('active-btn', isHidden);
+  });
 
   const members = data.all_members || [];
   list.innerHTML = members.map(m => `

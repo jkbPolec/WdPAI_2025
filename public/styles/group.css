@@ -315,18 +315,49 @@
 
   .group-header {
     flex-direction: column;
-    gap: 1.2rem;
+    align-items: stretch;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   .header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "add add"
+      "settle members";
+    gap: 0.8rem;
     width: 100%;
-    flex-direction: column;
   }
 
-  .btn-settle,
   .btn-add-expense {
+    grid-area: add;
     width: 100%;
+    padding: 1.1rem !important;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(19, 164, 236, 0.2);
+  }
+
+  .btn-settle {
+    grid-area: settle;
     justify-content: center;
+    padding: 0.9rem !important;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  #toggle-members-btn {
+    grid-area: members;
+    justify-content: center;
+    padding: 0.9rem !important;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .header-actions button img,
+  .header-actions a img {
+    width: 18px;
   }
 
   .payment-fields {
@@ -365,7 +396,7 @@
 
 .member-status-card {
   background: white;
-  padding: 1.2rem 2rem;
+  padding: 0.6rem 2rem;
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -524,6 +555,34 @@
 .tag-bills {
   background: #dcfce7;
   color: #15803d;
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--h1-color);
+  border: 1px solid #e2e8f0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.btn-secondary img {
+  opacity: 0.7;
+}
+
+.active-btn {
+  background: #f1f5f9;
+  border-color: var(--main-color);
 }
 
 @keyframes fadeIn {
