@@ -2,6 +2,8 @@
 
 require_once 'AppController.php';
 require_once __DIR__ . '/../services/SecurityService.php';
+require_once __DIR__ . '/../dto/LoginDTO.php';
+require_once __DIR__ . '/../dto/RegisterUserDTO.php';
 
 class SecurityController extends AppController
 {
@@ -14,13 +16,20 @@ class SecurityController extends AppController
 
     public function login()
     {
-        if (!$this->isPost()) return $this->render('login');
-
-        if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
-            return $this->render('login', ['messages' => 'Błąd CSRF.']);
+        if (!$this->isPost()) {
+            return $this->render('login');
         }
 
-        $result = $this->securityService->login($_POST);
+        if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+            return $this->render('login', ['error' => 'Błąd CSRF.']);
+        }
+
+        $loginDto = new LoginDTO(
+            $_POST['email'] ?? '',
+            $_POST['password'] ?? ''
+        );
+
+        $result = $this->securityService->login($loginDto);
 
         if ($result['status'] === 'success') {
             session_regenerate_id(true);
@@ -37,13 +46,23 @@ class SecurityController extends AppController
 
     public function register()
     {
-        if ($this->isGet()) return $this->render('register');
+        if ($this->isGet()) {
+            return $this->render('register');
+        }
 
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
             return $this->render('register', ['error' => 'Błąd CSRF.']);
         }
 
-        $result = $this->securityService->register($_POST);
+        $registerDto = new RegisterUserDTO(
+            $_POST['email'] ?? '',
+            $_POST['password'] ?? '',
+            $_POST['password2'] ?? '',
+            $_POST['firstname'] ?? '',
+            $_POST['lastname'] ?? ''
+        );
+
+        $result = $this->securityService->register($registerDto);
 
         if ($result['status'] === 'success') {
             return $this->render('login', ["messages" => $result['message']]);

@@ -2,6 +2,8 @@
 
 require_once 'Service.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
+require_once __DIR__ . '/../dto/LoginDTO.php';
+require_once __DIR__ . '/../dto/RegisterUserDTO.php';
 
 class SecurityService extends Service
 {
@@ -12,69 +14,43 @@ class SecurityService extends Service
         $this->userRepository = UserRepository::getInstance();
     }
 
-    public function login(array $data): array
+    public function login(LoginDTO $data): array
     {
-        $email = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
+        $user = $this->userRepository->getUserByEmail($data->getEmail());
 
-        if (empty($email) || empty($password)) {
-            return $this->error("Email i hasło są wymagane.");
-        }
-
-        $user = $this->userRepository->getUserByEmail($email);
-
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (!$user || !password_verify($data->getPassword(), $user->getPassword())) {
             return $this->error("Niepoprawny email lub hasło.");
         }
 
         return $this->success([
-            'id' => $user['id'],
-            'email' => $user['email'],
-            'firstname' => $user['firstname']
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'firstname' => $user->getFirstname()
         ]);
     }
 
-    public function register(array $data): array
+    public function register(RegisterUserDTO $data): array
     {
-        $email = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
-        $password2 = $data['password2'] ?? '';
-        $firstName = $data['firstname'] ?? '';
-        $lastName = $data['lastname'] ?? '';
-
-        if (empty($email) || empty($password) || empty($firstName) || empty($lastName)) {
+        if (empty($data->email) || empty($data->password) || empty($data->firstname)) {
             return $this->error("Wszystkie pola są wymagane.");
         }
 
-        if ($password !== $password2) {
-            return $this->error("Podane hasła nie są identyczne.");
+        if ($data->password !== $data->passwordConfirmation) {
+            return $this->error("Hasła nie są identyczne.");
         }
 
-        if (!$this->isValidEmail($email)) {
-            return $this->error("Nieprawidłowy format adresu email.");
-        }
-
-        if ($this->userRepository->getUserByEmail($email)) {
-            return $this->error("Użytkownik z tym mailem już istnieje.");
-        }
-
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
-            return $this->error(
-                "Hasło musi mieć min. 8 znaków, dużą literę, małą literę, cyfrę i znak specjalny."
-            );
+        if ($this->userRepository->getUserByEmail($data->email)) {
+            return $this->error("Użytkownik już istnieje.");
         }
 
         try {
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $this->userRepository->createUser($email, $hashedPassword, $firstName, $lastName);
-            return $this->success([], "Rejestracja pomyślna! Możesz się zalogować.");
-        } catch (Exception $e) {
-            return $this->error("Błąd podczas rejestracji.");
-        }
-    }
+            $hashedPassword = password_hash($data->password, PASSWORD_BCRYPT);
+            $newUser = new User(null, $data->firstname, $data->lastname, $data->email, $hashedPassword);
+            $this->userRepository->save($newUser);
 
-    private function isValidEmail(string $email): bool
-    {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+            return $this->success([], "Zarejestrowano pomyślnie.");
+        } catch (Exception $e) {
+            return $this->error("Błąd bazy danych.");
+        }
     }
 }

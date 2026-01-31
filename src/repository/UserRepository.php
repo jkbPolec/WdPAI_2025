@@ -1,58 +1,55 @@
 <?php
 
 require_once 'Repository.php';
+require_once __DIR__ . '/../models/User.php';
 
 class UserRepository extends Repository
 {
+    private static $instance;
 
-  private static $instance;
-
-  private function __construct() {
-    parent::__construct();
-  }
-
-  public static function getInstance(): UserRepository {
-    if (!isset(self::$instance)) {
-      self::$instance = new UserRepository();
+    public static function getInstance(): UserRepository {
+        if (!isset(self::$instance)) {
+            self::$instance = new UserRepository();
+        }
+        return self::$instance;
     }
-    return self::$instance;
-  }
 
-  public function getUsers(): ?array
-  {
+    public function getUserByEmail(string $email): ?User
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM users WHERE email = :email
+        ');
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
 
-    $query = $this->database->connect()->prepare(
-      'SELECT * FROM users'
-    );
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $query->execute();
+        if (!$row) {
+            return null;
+        }
 
-    $users = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $users;
-  }
+        // Etap drugi: Mapowanie tablicy na obiekt Entity
+        return new User(
+            $row['id'],
+            $row['firstname'],
+            $row['lastname'],
+            $row['email'],
+            $row['password']
+        );
+    }
 
-  public function getUserByEmail(string $email)
-  {
-    $query = $this->database->connect()->prepare(
-      'SELECT * FROM users WHERE email = :email'
-    );
-    $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->execute();
+    public function save(User $user): void
+    {
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO users (firstname, lastname, email, password)
+            VALUES (?, ?, ?, ?)
+        ');
 
-    $user = $query->fetch(PDO::FETCH_ASSOC);
-    return $user;
-  }
-
-  public function createUser(
-    string $email,
-    string $hashedPassword,
-    string $firstName,
-    string $lastName
-  ): void {
-    $query = $this->database->connect()->prepare(
-      'INSERT INTO users (firstname, lastname, email, password)
-      VALUES (?,?,?,?)'
-    );
-    $query->execute([$firstName, $lastName, $email, $hashedPassword]);
-  }
+        $stmt->execute([
+            $user->getFirstname(),
+            $user->getLastname(),
+            $user->getEmail(),
+            $user->getPassword()
+        ]);
+    }
 }
